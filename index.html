@@ -34,7 +34,7 @@
     .custom-v-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     .custom-v-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
 
-    /* Fix Khusus Render Faktur di Canvas / PNG */
+    /* Fix Khusus Render Faktur Presisi di Canvas */
     .faktur-canvas-target {
       box-sizing: border-box !important;
       -webkit-print-color-adjust: exact;
@@ -472,7 +472,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (REVISI SAFARI & RAPI PNG) -->
+  <!-- MODAL FAKTUR PENJUALAN (REVISI SIKU KOTAK & NOMINAL RATA KANAN PERFECT) -->
   <div id="modalFaktur" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
     <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-[420px] flex flex-col justify-between overflow-hidden max-h-[90vh]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2 shrink-0">
@@ -488,7 +488,7 @@
           
           <div class="flex justify-between items-start">
             <div>
-              <h2 class="text-2xl font-black text-red-700 tracking-tight leading-none">FAKTUR</h2>
+              <h2 class="text-2xl font-black text-[#c02425] tracking-tight leading-none">FAKTUR</h2>
               <p class="text-xs text-slate-600 font-semibold mt-1">Kepada: <span id="fakturPelanggan" class="font-extrabold text-slate-900">-</span></p>
             </div>
             <div class="text-right text-xs shrink-0">
@@ -497,46 +497,46 @@
             </div>
           </div>
 
-          <!-- TABEL PRODUCT -->
+          <!-- TABEL PRODUCT WITH SQUARE RED HEADER -->
           <div class="overflow-hidden">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-red-700 text-white font-semibold text-[10px] uppercase">
-                  <th class="py-1.5 px-2 rounded-l-lg font-bold">Barang</th>
+                <tr class="bg-[#c02425] text-white font-semibold text-[10px] uppercase">
+                  <th class="py-1.5 px-2 font-bold rounded-none">Barang</th>
                   <th class="py-1.5 px-1 text-center font-bold whitespace-nowrap">Qty</th>
                   <th class="py-1.5 px-1 text-right font-bold whitespace-nowrap">Harga</th>
-                  <th class="py-1.5 px-2 text-right rounded-r-lg font-bold whitespace-nowrap">Total</th>
+                  <th class="py-1.5 px-2 text-right font-bold whitespace-nowrap rounded-none w-32">Total</th>
                 </tr>
               </thead>
               <tbody id="fakturTableBody" class="divide-y divide-slate-100 font-normal text-slate-700"></tbody>
             </table>
-            <div class="border-b-2 border-red-700/80 mt-1"></div>
+            <div class="border-b-2 border-[#c02425] mt-1"></div>
           </div>
 
-          <!-- RINCIAN TAGIHAN -->
+          <!-- RINCIAN TAGIHAN DENGAN NOMINAL DIRATAKAN KE KANAN -->
           <div class="space-y-1 text-xs">
             <div class="flex justify-between items-center font-normal">
-              <span class="text-red-700 ml-auto mr-3 font-medium">Subtotal</span>
-              <span id="fakturSubtotal" class="text-slate-800 w-28 text-right font-semibold">Rp 0</span>
+              <span class="text-[#c02425] ml-auto mr-3 font-medium">Subtotal</span>
+              <span id="fakturSubtotal" class="text-slate-800 w-32 text-right pr-2 font-semibold">Rp 0</span>
             </div>
             <div class="flex justify-between items-center font-normal">
-              <span class="text-red-700 ml-auto mr-3 font-medium">Sisa Tagihan Lalu</span>
-              <span id="fakturSisaLalu" class="text-slate-800 w-28 text-right font-semibold">Rp 0</span>
+              <span class="text-[#c02425] ml-auto mr-3 font-medium">Sisa Tagihan Lalu</span>
+              <span id="fakturSisaLalu" class="text-slate-800 w-32 text-right pr-2 font-semibold">Rp 0</span>
             </div>
 
-            <!-- TOTAL BOX (FIXED UNTUK CANVAS SAFARI) -->
-            <div class="bg-red-700 text-white px-3 py-2 rounded-xl flex justify-between items-center font-extrabold shadow-sm my-1 relative overflow-hidden" style="-webkit-print-color-adjust: exact;">
-              <span class="tracking-wide text-xs">TOTAL</span>
-              <span id="fakturTotalTagihan" class="text-sm font-black">Rp 0</span>
+            <!-- TOTAL BOX SIKU-SIKU (NO ROUNDED) -->
+            <div class="bg-[#c02425] text-white px-3 py-2 rounded-none flex justify-between items-center font-extrabold shadow-sm my-1 relative overflow-hidden" style="-webkit-print-color-adjust: exact;">
+              <span class="tracking-wide text-xs pl-1">TOTAL</span>
+              <span id="fakturTotalTagihan" class="text-sm font-black w-32 text-right pr-2">Rp 0</span>
             </div>
 
             <div class="flex justify-between items-center font-normal text-emerald-600">
               <span class="ml-auto mr-3 font-medium">Bayar/DP</span>
-              <span id="fakturPelunasan" class="w-28 text-right font-semibold">-Rp 0</span>
+              <span id="fakturPelunasan" class="w-32 text-right pr-2 font-semibold">-Rp 0</span>
             </div>
-            <div class="flex justify-between items-center font-extrabold text-red-600 pt-0.5">
+            <div class="flex justify-between items-center font-extrabold text-[#c02425] pt-0.5">
               <span class="ml-auto mr-3">Sisa Bon</span>
-              <span id="fakturSisaBon" class="w-28 text-right text-sm">Rp 0</span>
+              <span id="fakturSisaBon" class="w-32 text-right pr-2 text-sm">Rp 0</span>
             </div>
           </div>
 
@@ -566,30 +566,20 @@
     let state = {
       transactions: [
         {
-          id: 33824,
+          id: 88837,
           tanggal: "2026-07-28",
           pelanggan: "Bg Misran PJS",
-          rincian: "Ayam Potong (35kg 17ekor)",
-          items: [{ namaBarang: "Ayam Potong", kg: 35, ekor: 17, harga: 30000, subtotal: 1050000 }],
+          rincian: "Ayam Penyet (30 ekor), Ayam Potong (12 kg)",
+          items: [
+            { namaBarang: "Ayam Penyet", kg: 0, ekor: 30, harga: 32000, subtotal: 960000 },
+            { namaBarang: "Ayam Potong", kg: 12, ekor: 5, harga: 30000, subtotal: 360000 }
+          ],
           biayaLain: 0,
-          belanja: 1050000,
-          sisaLalu: 1140000,
-          totalTagihan: 2190000,
-          pelunasan: 0,
-          sisa: 2190000
-        },
-        {
-          id: 48411,
-          tanggal: "2026-07-28",
-          pelanggan: "King KFC Perlak",
-          rincian: "Ayam Potong (110kg)",
-          items: [{ namaBarang: "Ayam Potong", kg: 110, ekor: 0, harga: 30000, subtotal: 3300000 }],
-          biayaLain: 0,
-          belanja: 3300000,
-          sisaLalu: 0,
-          totalTagihan: 3300000,
-          pelunasan: 3300000,
-          sisa: 0
+          belanja: 1320000,
+          sisaLalu: 1050000,
+          totalTagihan: 2370000,
+          pelunasan: 1500000,
+          sisa: 870000
         }
       ],
       customers: [
@@ -913,7 +903,7 @@
               </td>
               <td class="py-1.5 px-1 text-center font-bold text-slate-700 whitespace-nowrap">${qtyStr}</td>
               <td class="py-1.5 px-1 text-right text-slate-600 font-normal whitespace-nowrap">${item.harga ? formatRupiah(item.harga) : '-'}</td>
-              <td class="py-1.5 px-2 text-right font-bold text-slate-900 whitespace-nowrap">${formatRupiah(item.subtotal)}</td>
+              <td class="py-1.5 px-2 text-right font-bold text-slate-900 whitespace-nowrap w-32 pr-2">${formatRupiah(item.subtotal)}</td>
             </tr>
           `;
         }).join('');
@@ -929,7 +919,7 @@
         htmlRows += `
           <tr class="align-top font-normal">
             <td colspan="3" class="py-1.5 px-2 text-slate-700 font-normal">Biaya Lainnya</td>
-            <td class="py-1.5 px-2 text-right font-bold text-slate-900 whitespace-nowrap">${formatRupiah(t.biayaLain)}</td>
+            <td class="py-1.5 px-2 text-right font-bold text-slate-900 whitespace-nowrap w-32 pr-2">${formatRupiah(t.biayaLain)}</td>
           </tr>
         `;
       }
@@ -938,7 +928,7 @@
       toggleModalFaktur(true);
     }
 
-    /* REVISI UTAMA FUNGSI UNDUH PNG SAFARI */
+    /* FUNGSI UNDUH PNG TANPA SHIFT/MELENCENG */
     async function downloadFakturPNG() {
       const element = document.getElementById('fakturCardCanvas');
       if (!element) return;
@@ -959,6 +949,7 @@
               clonedCard.style.transform = 'none';
               clonedCard.style.boxShadow = 'none';
               clonedCard.style.margin = '0';
+              clonedCard.style.borderRadius = '0';
             }
           }
         });

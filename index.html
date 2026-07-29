@@ -33,6 +33,12 @@
     .custom-v-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
     .custom-v-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     .custom-v-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
+
+    /* Fix Khusus Render Faktur di Canvas / PNG */
+    .faktur-canvas-target {
+      box-sizing: border-box !important;
+      -webkit-print-color-adjust: exact;
+    }
   </style>
 </head>
 <body class="text-slate-800 antialiased font-sans h-screen h-[100dvh] overflow-hidden">
@@ -348,7 +354,7 @@
     </div>
   </div>
 
-  <!-- MODAL INPUT TRANSAKSI (OPTIMIZED FOR DESKTOP & SAFARI) -->
+  <!-- MODAL INPUT TRANSAKSI -->
   <div id="modalInputTransaksi" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
     <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-md md:max-w-lg flex flex-col max-h-[90vh] overflow-hidden">
       <!-- HEADER MODAL -->
@@ -466,37 +472,40 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN -->
+  <!-- MODAL FAKTUR PENJUALAN (REVISI SAFARI & RAPI PNG) -->
   <div id="modalFaktur" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
-    <div class="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 w-full max-w-md flex flex-col justify-between overflow-hidden max-h-[90vh]">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
+    <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-[420px] flex flex-col justify-between overflow-hidden max-h-[90vh]">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2 shrink-0">
         <h3 class="text-xs font-black uppercase text-slate-400 tracking-wider">Cetak Faktur Penjualan</h3>
         <button onclick="toggleModalFaktur(false)" class="p-1 text-slate-400 hover:text-slate-700 rounded-full transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <div class="safari-scroll-container overflow-y-auto flex-1 min-h-0">
-        <div id="fakturCardCanvas" class="my-3 p-5 bg-white border border-slate-200/80 rounded-2xl shadow-sm text-slate-800 space-y-4">
+      <div class="safari-scroll-container overflow-y-auto flex-1 min-h-0 py-1">
+        <!-- CANVAS CONTAINER FAKTUR -->
+        <div id="fakturCardCanvas" class="faktur-canvas-target my-2 p-4 md:p-5 bg-white border border-slate-200/80 rounded-2xl shadow-sm text-slate-800 space-y-3.5">
+          
           <div class="flex justify-between items-start">
             <div>
-              <h2 class="text-2xl font-extrabold text-red-700 tracking-tight leading-none">FAKTUR</h2>
+              <h2 class="text-2xl font-black text-red-700 tracking-tight leading-none">FAKTUR</h2>
               <p class="text-xs text-slate-600 font-semibold mt-1">Kepada: <span id="fakturPelanggan" class="font-extrabold text-slate-900">-</span></p>
             </div>
-            <div class="text-right text-xs">
+            <div class="text-right text-xs shrink-0">
               <p class="font-bold text-slate-700"><span class="text-slate-400">ID:</span> <span id="fakturNoNota">TX_17850</span></p>
               <p class="font-semibold text-slate-500 mt-0.5"><span class="text-slate-400">Tgl:</span> <span id="fakturTanggal">26/07/2026</span></p>
             </div>
           </div>
 
+          <!-- TABEL PRODUCT -->
           <div class="overflow-hidden">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-red-700 text-white font-normal text-[11px] uppercase">
-                  <th class="py-2 px-2.5 rounded-l-lg font-normal">Barang</th>
-                  <th class="py-2 px-1 text-center font-normal">Qty</th>
-                  <th class="py-2 px-1 text-right font-normal">Harga</th>
-                  <th class="py-2 px-2.5 text-right rounded-r-lg font-normal">Total</th>
+                <tr class="bg-red-700 text-white font-semibold text-[10px] uppercase">
+                  <th class="py-1.5 px-2 rounded-l-lg font-bold">Barang</th>
+                  <th class="py-1.5 px-1 text-center font-bold whitespace-nowrap">Qty</th>
+                  <th class="py-1.5 px-1 text-right font-bold whitespace-nowrap">Harga</th>
+                  <th class="py-1.5 px-2 text-right rounded-r-lg font-bold whitespace-nowrap">Total</th>
                 </tr>
               </thead>
               <tbody id="fakturTableBody" class="divide-y divide-slate-100 font-normal text-slate-700"></tbody>
@@ -504,30 +513,35 @@
             <div class="border-b-2 border-red-700/80 mt-1"></div>
           </div>
 
-          <div class="space-y-1.5 text-xs">
+          <!-- RINCIAN TAGIHAN -->
+          <div class="space-y-1 text-xs">
             <div class="flex justify-between items-center font-normal">
-              <span class="text-red-700 ml-auto mr-4 font-normal">Subtotal</span>
-              <span id="fakturSubtotal" class="text-slate-800 w-28 text-right font-normal">Rp 0</span>
+              <span class="text-red-700 ml-auto mr-3 font-medium">Subtotal</span>
+              <span id="fakturSubtotal" class="text-slate-800 w-28 text-right font-semibold">Rp 0</span>
             </div>
             <div class="flex justify-between items-center font-normal">
-              <span class="text-red-700 ml-auto mr-4 font-normal">Sisa Tagihan Lalu</span>
-              <span id="fakturSisaLalu" class="text-slate-800 w-28 text-right font-normal">Rp 0</span>
+              <span class="text-red-700 ml-auto mr-3 font-medium">Sisa Tagihan Lalu</span>
+              <span id="fakturSisaLalu" class="text-slate-800 w-28 text-right font-semibold">Rp 0</span>
             </div>
-            <div class="bg-red-700 text-white p-2.5 rounded-xl flex justify-between items-center font-extrabold shadow-sm my-1">
-              <span class="tracking-wide">TOTAL</span>
-              <span id="fakturTotalTagihan" class="text-base">Rp 0</span>
+
+            <!-- TOTAL BOX (FIXED UNTUK CANVAS SAFARI) -->
+            <div class="bg-red-700 text-white px-3 py-2 rounded-xl flex justify-between items-center font-extrabold shadow-sm my-1 relative overflow-hidden" style="-webkit-print-color-adjust: exact;">
+              <span class="tracking-wide text-xs">TOTAL</span>
+              <span id="fakturTotalTagihan" class="text-sm font-black">Rp 0</span>
             </div>
+
             <div class="flex justify-between items-center font-normal text-emerald-600">
-              <span class="ml-auto mr-4 font-normal">Bayar/DP</span>
-              <span id="fakturPelunasan" class="w-28 text-right font-normal">-Rp 0</span>
+              <span class="ml-auto mr-3 font-medium">Bayar/DP</span>
+              <span id="fakturPelunasan" class="w-28 text-right font-semibold">-Rp 0</span>
             </div>
             <div class="flex justify-between items-center font-extrabold text-red-600 pt-0.5">
-              <span class="ml-auto mr-4">Sisa Bon</span>
-              <span id="fakturSisaBon" class="w-28 text-right">Rp 0</span>
+              <span class="ml-auto mr-3">Sisa Bon</span>
+              <span id="fakturSisaBon" class="w-28 text-right text-sm">Rp 0</span>
             </div>
           </div>
 
-          <div class="pt-3 border-t border-dashed border-slate-200 text-[10px] text-slate-500 font-medium">
+          <!-- NOTE / FOOTER (1 BARIS PENUH) -->
+          <div class="pt-2.5 border-t border-dashed border-slate-200 text-[9px] text-slate-500 font-medium whitespace-nowrap overflow-hidden text-ellipsis leading-tight">
             <p><span class="font-extrabold text-slate-700">INFO:</span> Transfer SeaBank <span class="font-bold text-slate-800">9017-6605-7787</span> a.n Khairul Akbar</p>
           </div>
         </div>
@@ -552,30 +566,17 @@
     let state = {
       transactions: [
         {
-          id: 48409,
-          tanggal: "2026-07-27",
-          pelanggan: "Bg Misran PJS",
-          rincian: "Ayam Potong (56kg 30ekor)",
-          items: [{ namaBarang: "Ayam Potong", kg: 56, ekor: 30, harga: 30000, subtotal: 1680000 }],
-          biayaLain: 0,
-          belanja: 1680000,
-          sisaLalu: 0,
-          totalTagihan: 1680000,
-          pelunasan: 0,
-          sisa: 1680000
-        },
-        {
-          id: 48410,
+          id: 33824,
           tanggal: "2026-07-28",
           pelanggan: "Bg Misran PJS",
-          rincian: "Ayam Penyet (30ekor)",
-          items: [{ namaBarang: "Ayam Penyet", kg: 0, ekor: 30, harga: 32000, subtotal: 960000 }],
+          rincian: "Ayam Potong (35kg 17ekor)",
+          items: [{ namaBarang: "Ayam Potong", kg: 35, ekor: 17, harga: 30000, subtotal: 1050000 }],
           biayaLain: 0,
-          belanja: 960000,
-          sisaLalu: 1680000,
-          totalTagihan: 2640000,
-          pelunasan: 1500000,
-          sisa: 1140000
+          belanja: 1050000,
+          sisaLalu: 1140000,
+          totalTagihan: 2190000,
+          pelunasan: 0,
+          sisa: 2190000
         },
         {
           id: 48411,
@@ -901,18 +902,18 @@
           let detailSub = '';
           if (item.namaBarang === 'Ayam Potong' && item.kg > 0 && item.ekor > 0) {
             const abw = (item.kg / item.ekor).toFixed(2);
-            detailSub = `<div class="text-[10px] text-slate-400 font-normal leading-tight">(${item.ekor} ekor)<br>ABW: ${abw} kg/ekor</div>`;
+            detailSub = `<div class="text-[9px] text-slate-400 font-medium leading-tight">(${item.ekor} ekor) ABW: ${abw} kg/ekor</div>`;
           }
 
           return `
             <tr class="align-top font-normal">
-              <td class="py-2 px-2.5 font-normal">
-                <div class="font-normal text-slate-900">${item.namaBarang}</div>
+              <td class="py-1.5 px-2 font-normal">
+                <div class="font-bold text-slate-900">${item.namaBarang}</div>
                 ${detailSub}
               </td>
-              <td class="py-2 px-1 text-center font-normal text-slate-700">${qtyStr}</td>
-              <td class="py-2 px-1 text-right text-slate-600 font-normal">${item.harga ? formatRupiah(item.harga) : '-'}</td>
-              <td class="py-2 px-2.5 text-right font-normal text-slate-900">${formatRupiah(item.subtotal)}</td>
+              <td class="py-1.5 px-1 text-center font-bold text-slate-700 whitespace-nowrap">${qtyStr}</td>
+              <td class="py-1.5 px-1 text-right text-slate-600 font-normal whitespace-nowrap">${item.harga ? formatRupiah(item.harga) : '-'}</td>
+              <td class="py-1.5 px-2 text-right font-bold text-slate-900 whitespace-nowrap">${formatRupiah(item.subtotal)}</td>
             </tr>
           `;
         }).join('');
@@ -927,8 +928,8 @@
       if (t.biayaLain && t.biayaLain > 0) {
         htmlRows += `
           <tr class="align-top font-normal">
-            <td colspan="3" class="py-2 px-2.5 text-slate-700 font-normal">Biaya Lainnya</td>
-            <td class="py-2 px-2.5 text-right font-normal text-slate-900">${formatRupiah(t.biayaLain)}</td>
+            <td colspan="3" class="py-1.5 px-2 text-slate-700 font-normal">Biaya Lainnya</td>
+            <td class="py-1.5 px-2 text-right font-bold text-slate-900 whitespace-nowrap">${formatRupiah(t.biayaLain)}</td>
           </tr>
         `;
       }
@@ -937,16 +938,42 @@
       toggleModalFaktur(true);
     }
 
-    function downloadFakturPNG() {
+    /* REVISI UTAMA FUNGSI UNDUH PNG SAFARI */
+    async function downloadFakturPNG() {
       const element = document.getElementById('fakturCardCanvas');
-      html2canvas(element, { scale: 2, backgroundColor: "#ffffff", useCORS: true }).then(canvas => {
+      if (!element) return;
+
+      try {
+        if (document.fonts) await document.fonts.ready;
+
+        const canvas = await html2canvas(element, {
+          scale: 3, 
+          backgroundColor: "#ffffff",
+          useCORS: true,
+          logging: false,
+          windowWidth: element.scrollWidth,
+          windowHeight: element.scrollHeight,
+          onclone: (clonedDoc) => {
+            const clonedCard = clonedDoc.getElementById('fakturCardCanvas');
+            if (clonedCard) {
+              clonedCard.style.transform = 'none';
+              clonedCard.style.boxShadow = 'none';
+              clonedCard.style.margin = '0';
+            }
+          }
+        });
+
         const link = document.createElement('a');
         const pelangganNama = document.getElementById('fakturPelanggan').innerText.replace(/\s+/g, '_');
         const tanggalStr = document.getElementById('fakturTanggal').innerText.replace(/\//g, '-');
+        
         link.download = `Faktur_UD_DOA_AKBAR_${pelangganNama}_${tanggalStr}.png`;
-        link.href = canvas.toDataURL('image/png');
+        link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
-      });
+      } catch (err) {
+        console.error("Gagal cetak PNG:", err);
+        alert("Gagal mengunduh faktur. Silakan coba lagi.");
+      }
     }
 
     function toggleModalFaktur(show) { document.getElementById('modalFaktur').classList.toggle('hidden', !show); }

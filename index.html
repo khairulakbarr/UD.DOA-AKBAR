@@ -20,7 +20,6 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* Perbaikan Scroll Safari / WebKit */
     .safari-scroll-container {
       -webkit-overflow-scrolling: touch;
       overflow-y: auto;
@@ -42,7 +41,7 @@
 
   <div class="flex h-full w-full overflow-hidden">
 
-    <!-- SIDEBAR LEFT (SEKARANG RESPONSUIF DI IPHONE & DESKTOP) -->
+    <!-- SIDEBAR LEFT -->
     <aside id="mainSidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-[#0f172a] border-r border-slate-800 p-5 flex flex-col justify-between text-slate-300 shrink-0 h-full -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
       <div>
         <div class="flex items-center justify-between mb-8 px-1">
@@ -61,7 +60,6 @@
             </div>
           </div>
 
-          <!-- Tombol Close khusus Layar HP -->
           <button onclick="toggleSidebar(false)" class="md:hidden p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
@@ -76,10 +74,18 @@
             <i data-lucide="truck" class="w-4 h-4"></i>
             <span>Monitoring Supplier</span>
           </a>
-          <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition">
+          
+          <!-- MENU MONITORING CUSTOMER (AKTIF BY DEFAULT) -->
+          <button id="menuCustomer" onclick="switchPage('customer')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition">
             <i data-lucide="users" class="w-4 h-4"></i>
             <span>Monitoring Customer</span>
-          </a>
+          </button>
+
+          <!-- MENU BARU: CATATAN ARUS BUKU (DI BAWAH MONITORING CUSTOMER) -->
+          <button id="menuArusBuku" onclick="switchPage('arusbuku')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>Catatan Arus Buku</span>
+          </button>
         </nav>
       </div>
 
@@ -95,10 +101,8 @@
     <main class="flex-1 p-4 md:p-6 flex flex-col justify-between h-full overflow-y-auto md:overflow-hidden min-w-0 safari-scroll-container">
 
       <!-- TOPBAR / HEADER WITH LIVE SEARCH & HAMBURGER BUTTON -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0">
-        
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0 mb-2">
         <div class="flex items-center gap-2 w-full md:w-auto">
-          <!-- Tombol Hamburger untuk iPhone/HP -->
           <button onclick="toggleSidebar(true)" class="p-2 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 hover:text-red-600 md:hidden transition shrink-0" title="Buka Menu Sidebar">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
@@ -141,60 +145,60 @@
         </div>
       </div>
 
-      <!-- TITLE BAR & BUTTON -->
-      <div class="flex items-center justify-between shrink-0 my-2">
-        <div>
-          <h2 class="text-base md:text-lg font-extrabold text-slate-900 tracking-tight">Kartu Ringkasan Tagihan</h2>
-        </div>
-        <button onclick="openModalTambah()" class="flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md shadow-red-600/25 transition">
-          <i data-lucide="plus" class="w-4 h-4"></i>
-          <span>Tambah Transaksi Baru</span>
-        </button>
-      </div>
-
-      <!-- 3 CARDS SUMMARY -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0">
-        <div class="bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
+      <!-- PAGE 1: MONITORING CUSTOMER -->
+      <div id="pageCustomer" class="flex-1 flex flex-col space-y-3 overflow-y-auto safari-scroll-container">
+        
+        <!-- TITLE BAR & BUTTON -->
+        <div class="flex items-center justify-between shrink-0">
           <div>
-            <p class="text-[10px] text-red-100 font-semibold">Total Penjualan Hari Ini/Periode</p>
-            <h3 id="cardTotalPenjualan" class="text-lg font-extrabold tracking-tight">Rp 0</h3>
+            <h2 class="text-base md:text-lg font-extrabold text-slate-900 tracking-tight">Kartu Ringkasan Tagihan</h2>
           </div>
-          <div class="flex justify-between items-end">
-            <p class="text-[9px] text-red-200 font-bold uppercase">AKUMULASI PENJUALAN</p>
-            <div class="p-1 bg-white/15 rounded-lg backdrop-blur-sm"><i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-white"></i></div>
-          </div>
+          <button onclick="openModalTambah()" class="flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md shadow-red-600/25 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Tambah Transaksi Baru</span>
+          </button>
         </div>
 
-        <div class="bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
-          <div>
-            <p class="text-[10px] text-orange-100 font-semibold">Total Diterima / Pelunasan</p>
-            <h3 id="cardTotalDiterima" class="text-lg font-extrabold tracking-tight">Rp 0</h3>
-          </div>
-          <div class="flex justify-between items-end">
-            <p class="text-[9px] text-orange-200 font-bold uppercase">STATUS: <span id="cardPersenTerbayar" class="text-white">0% Terbayar</span></p>
-            <div class="p-1 bg-white/15 rounded-lg backdrop-blur-sm"><i data-lucide="wallet" class="w-3.5 h-3.5 text-white"></i></div>
-          </div>
-        </div>
-
-        <div class="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
-          <div>
-            <p class="text-[10px] text-slate-400 font-semibold">Sisa Piutang Aktif (Real-time)</p>
-            <h3 id="cardSisaPiutang" class="text-lg font-extrabold tracking-tight text-orange-400">Rp 0</h3>
-          </div>
-          <div class="flex justify-between items-end">
-            <p class="text-[9px] text-slate-400 font-bold uppercase">TOTAL BON AKTIF</p>
-            <div class="p-1 bg-red-500/20 text-red-400 rounded-lg"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MIDDLE SECTION -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 my-2 shrink-0">
-        <div class="lg:col-span-2 bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex flex-col justify-between overflow-hidden">
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center gap-2">
-              <h3 class="text-xs font-extrabold text-slate-900">Daftar Tagihan Customer</h3>
+        <!-- 3 CARDS SUMMARY -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0">
+          <div class="bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
+            <div>
+              <p class="text-[10px] text-red-100 font-semibold">Total Penjualan Hari Ini/Periode</p>
+              <h3 id="cardTotalPenjualan" class="text-lg font-extrabold tracking-tight">Rp 0</h3>
             </div>
+            <div class="flex justify-between items-end">
+              <p class="text-[9px] text-red-200 font-bold uppercase">AKUMULASI PENJUALAN</p>
+              <div class="p-1 bg-white/15 rounded-lg backdrop-blur-sm"><i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-white"></i></div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
+            <div>
+              <p class="text-[10px] text-orange-100 font-semibold">Total Diterima / Pelunasan</p>
+              <h3 id="cardTotalDiterima" class="text-lg font-extrabold tracking-tight">Rp 0</h3>
+            </div>
+            <div class="flex justify-between items-end">
+              <p class="text-[9px] text-orange-200 font-bold uppercase">STATUS: <span id="cardPersenTerbayar" class="text-white">0% Terbayar</span></p>
+              <div class="p-1 bg-white/15 rounded-lg backdrop-blur-sm"><i data-lucide="wallet" class="w-3.5 h-3.5 text-white"></i></div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
+            <div>
+              <p class="text-[10px] text-slate-400 font-semibold">Sisa Piutang Aktif (Real-time)</p>
+              <h3 id="cardSisaPiutang" class="text-lg font-extrabold tracking-tight text-orange-400">Rp 0</h3>
+            </div>
+            <div class="flex justify-between items-end">
+              <p class="text-[9px] text-slate-400 font-bold uppercase">TOTAL BON AKTIF</p>
+              <div class="p-1 bg-red-500/20 text-red-400 rounded-lg"><i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DAFTAR TAGIHAN CUSTOMER -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex flex-col justify-between overflow-hidden shrink-0">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-xs font-extrabold text-slate-900">Daftar Tagihan Customer</h3>
             <button onclick="toggleModalCustomer(true)" class="flex items-center gap-1.5 bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-xl hover:bg-slate-800 shadow-sm transition">
               <i data-lucide="settings-2" class="w-3 h-3 text-orange-400"></i>
               <span>Kelola / Edit</span>
@@ -206,7 +210,8 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex flex-col justify-between">
+        <!-- GRAFIK PIUTANG (POSISI SEKARANG DI BAWAH DAFTAR TAGIHAN) -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex flex-col justify-between shrink-0">
           <div class="flex items-center justify-between mb-1">
             <div>
               <h3 class="text-xs font-extrabold text-slate-900">Grafik Piutang Berjalan</h3>
@@ -215,7 +220,7 @@
             <i data-lucide="bar-chart-3" class="w-4 h-4 text-orange-500"></i>
           </div>
 
-          <div id="chartBarContainer" class="h-16 flex items-end justify-between gap-1.5 pt-2 pb-1 border-b border-slate-200">
+          <div id="chartBarContainer" class="h-24 flex items-end justify-between gap-2 pt-2 pb-1 border-b border-slate-200">
             <div class="w-full text-center text-[10px] text-slate-400 py-4">Memuat Grafik...</div>
           </div>
 
@@ -223,11 +228,12 @@
             <span>-</span>
           </div>
         </div>
+
       </div>
 
-      <!-- BOTTOM SECTION: TABEL ARUS BUKU -->
-      <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex-1 flex flex-col justify-between overflow-hidden min-h-[300px] md:min-h-0">
-        <div class="flex items-center justify-between mb-2 shrink-0">
+      <!-- PAGE 2: JENDELA KUSUS CATATAN ARUS BUKU -->
+      <div id="pageArusBuku" class="hidden flex-1 bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex-col justify-between overflow-hidden h-full">
+        <div class="flex items-center justify-between mb-3 shrink-0">
           <div class="flex items-center gap-2 text-xs font-extrabold text-slate-900">
             <i data-lucide="book-open" class="w-4 h-4 text-red-600"></i>
             <span>Arus Buku Rincian Catatan Piutang</span>
@@ -369,7 +375,6 @@
   <!-- MODAL INPUT TRANSAKSI -->
   <div id="modalInputTransaksi" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
     <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-md md:max-w-lg flex flex-col max-h-[90vh] overflow-hidden">
-      <!-- HEADER MODAL -->
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
         <div class="flex items-center gap-2.5">
           <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 text-white flex items-center justify-center shadow-md shadow-red-600/20">
@@ -385,7 +390,6 @@
         </button>
       </div>
 
-      <!-- FORM CONTENT -->
       <form id="formTransaksiBaru" onsubmit="handleFormSubmit(event)" class="flex flex-col flex-1 min-h-0">
         <div class="safari-scroll-container overflow-y-auto custom-v-scrollbar py-2.5 space-y-2 text-xs pr-1 flex-1 max-h-[calc(90vh-120px)]">
           <input type="hidden" id="editIndex" value="-1">
@@ -617,7 +621,35 @@
 
     let tempItems = [];
 
-    // FUNGSI TOGGLE SIDEBAR UNTUK MOBILE / IPHONE
+    // FUNGSI PINDAH HALAMAN / TAB
+    function switchPage(page) {
+      const pageCustomer = document.getElementById('pageCustomer');
+      const pageArusBuku = document.getElementById('pageArusBuku');
+      const menuCustomer = document.getElementById('menuCustomer');
+      const menuArusBuku = document.getElementById('menuArusBuku');
+
+      if (page === 'customer') {
+        pageCustomer.classList.remove('hidden');
+        pageCustomer.classList.add('flex');
+        pageArusBuku.classList.add('hidden');
+        pageArusBuku.classList.remove('flex');
+
+        menuCustomer.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition";
+        menuArusBuku.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold";
+      } else if (page === 'arusbuku') {
+        pageCustomer.classList.add('hidden');
+        pageCustomer.classList.remove('flex');
+        pageArusBuku.classList.remove('hidden');
+        pageArusBuku.classList.add('flex');
+
+        menuArusBuku.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition";
+        menuCustomer.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold";
+      }
+
+      // Tutup sidebar di HP jika di-klik
+      toggleSidebar(false);
+    }
+
     function toggleSidebar(open) {
       const sidebar = document.getElementById('mainSidebar');
       const overlay = document.getElementById('sidebarOverlay');
@@ -831,7 +863,7 @@
         const heightPercent = Math.max(Math.round((val / maxVal) * 100), 12);
         return `
           <div class="flex-1 flex flex-col items-center justify-end h-full group relative" title="${formatDateShort(d)}: ${formatRupiah(val)}">
-            <div class="w-full max-w-[22px] bg-gradient-to-t from-red-600 to-orange-400 rounded-t-md transition-all group-hover:brightness-110" style="height: ${heightPercent}%"></div>
+            <div class="w-full max-w-[28px] bg-gradient-to-t from-red-600 to-orange-400 rounded-t-md transition-all group-hover:brightness-110" style="height: ${heightPercent}%"></div>
           </div>
         `;
       }).join('');

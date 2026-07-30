@@ -11,7 +11,8 @@
   
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- Mengganti html2canvas dengan html-to-image untuk hasil unduhan presisi 1:1 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
   
   <style>
     html, body {
@@ -43,7 +44,7 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* CSS Khusus Perbaikan Faktur */
+    /* CSS Khusus Perbaikan Faktur & Total Box Overlap */
     .faktur-th-header {
       background-color: #b30000;
       color: white;
@@ -62,14 +63,36 @@
       border-bottom-right-radius: 8px;
       padding-right: 10px;
     }
-    
+
+    /* Perbaikan Spacing Tabel Ringkasan Faktur */
+    .faktur-summary-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 4px;
+      margin-top: 8px;
+    }
+
+    /* Kotak Total Merah yang Direvisi agar Tidak Menumpuk */
+    .faktur-total-row td {
+      background-color: #b30000;
+      color: #ffffff;
+      font-weight: 700;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+    .faktur-total-row {
+      margin-top: 14px;
+      margin-bottom: 12px;
+    }
     .total-box-left {
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
+      padding-left: 12px !important;
     }
     .total-box-right {
       border-top-right-radius: 8px;
       border-bottom-right-radius: 8px;
+      padding-right: 12px !important;
     }
 
     /* iOS Extra Padding Support */
@@ -531,7 +554,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (DISINKRONKAN LENGKAP) -->
+  <!-- MODAL FAKTUR PENJUALAN -->
   <div id="modalFaktur" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
     <div class="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 w-full max-w-md flex flex-col justify-between overflow-hidden max-h-[90vh]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -546,7 +569,6 @@
           <div class="flex justify-between items-start">
             <div>
               <h2 class="text-2xl font-bold text-red-700 tracking-tight leading-none">FAKTUR</h2>
-              <!-- NAMA PELANGGAN BOLD -->
               <p class="text-xs text-slate-600 font-normal mt-1">Kepada: <span id="fakturPelanggan" class="font-bold text-slate-900">-</span></p>
             </div>
             <div class="text-right text-xs font-normal">
@@ -572,30 +594,30 @@
           </div>
 
           <!-- RINCIAN NOMINAL FAKTUR -->
-          <table class="w-full text-xs" style="border-collapse: collapse;">
+          <table class="faktur-summary-table text-xs">
             <tbody>
               <tr>
                 <td colspan="3" class="py-1 text-right text-red-700 font-normal">Subtotal</td>
-                <td id="fakturSubtotal" class="py-1 text-right text-slate-800 font-normal px-2.5" style="width: 100px;">Rp 0</td>
+                <td id="fakturSubtotal" class="py-1 text-right text-slate-800 font-normal px-2.5" style="width: 110px;">Rp 0</td>
               </tr>
               <tr>
                 <td colspan="3" class="py-1 text-right text-red-700 font-normal">Sisa Tagihan Lalu</td>
-                <td id="fakturSisaLalu" class="py-1 text-right text-slate-800 font-normal px-2.5" style="width: 100px;">Rp 0</td>
+                <td id="fakturSisaLalu" class="py-1 text-right text-slate-800 font-normal px-2.5" style="width: 110px;">Rp 0</td>
               </tr>
               
-              <!-- BOX MERAH BAWAH DENGAN UJUNG SIMETRIS -->
-              <tr class="bg-red-700 text-white font-normal">
-                <td colspan="2" class="py-2.5 px-3 total-box-left text-left font-normal">TOTAL</td>
-                <td colspan="2" id="fakturTotalTagihan" class="py-2.5 px-2.5 total-box-right text-right font-normal" style="width: 100px;">Rp 0</td>
+              <!-- BOX MERAH TOTAL -->
+              <tr class="faktur-total-row">
+                <td colspan="2" class="total-box-left text-left">TOTAL</td>
+                <td colspan="2" id="fakturTotalTagihan" class="total-box-right text-right" style="width: 110px;">Rp 0</td>
               </tr>
 
               <tr>
-                <td colspan="3" class="py-1 pt-2 text-right text-emerald-600 font-normal">Bayar/DP</td>
-                <td id="fakturPelunasan" class="py-1 pt-2 text-right text-emerald-600 font-normal px-2.5" style="width: 100px;">-Rp 0</td>
+                <td colspan="3" class="py-1 pt-3 text-right text-emerald-600 font-normal">Bayar/DP</td>
+                <td id="fakturPelunasan" class="py-1 pt-3 text-right text-emerald-600 font-normal px-2.5" style="width: 110px;">-Rp 0</td>
               </tr>
               <tr>
                 <td colspan="3" class="py-1 text-right text-red-700 font-normal">Sisa Bon</td>
-                <td id="fakturSisaBon" class="py-1 text-right text-red-700 font-normal px-2.5" style="width: 100px;">Rp 0</td>
+                <td id="fakturSisaBon" class="py-1 text-right text-red-700 font-normal px-2.5" style="width: 110px;">Rp 0</td>
               </tr>
             </tbody>
           </table>
@@ -1075,15 +1097,29 @@
       toggleModalFaktur(true);
     }
 
+    // FUNGSI UNDUH PNG MENGGUNAKAN HTML-TO-IMAGE (SOLUSI LAYOUT PRESISI 100%)
     function downloadFakturPNG() {
-      const element = document.getElementById('fakturCardCanvas');
-      html2canvas(element, { scale: 2, backgroundColor: "#ffffff", useCORS: true }).then(canvas => {
+      const node = document.getElementById('fakturCardCanvas');
+      if (!node) return;
+
+      const pelangganNama = document.getElementById('fakturPelanggan').innerText.replace(/\s+/g, '_');
+      const tanggalStr = document.getElementById('fakturTanggal').innerText.replace(/\//g, '-');
+      const filename = `Faktur_UD_DOA_AKBAR_${pelangganNama}_${tanggalStr}.png`;
+
+      htmlToImage.toPng(node, {
+        pixelRatio: 2, // Kualitas gambar super tajam (HD)
+        backgroundColor: '#ffffff',
+        cacheBust: true,
+      })
+      .then(function (dataUrl) {
         const link = document.createElement('a');
-        const pelangganNama = document.getElementById('fakturPelanggan').innerText.replace(/\s+/g, '_');
-        const tanggalStr = document.getElementById('fakturTanggal').innerText.replace(/\//g, '-');
-        link.download = `Faktur_UD_DOA_AKBAR_${pelangganNama}_${tanggalStr}.png`;
-        link.href = canvas.toDataURL('image/png');
+        link.download = filename;
+        link.href = dataUrl;
         link.click();
+      })
+      .catch(function (error) {
+        console.error('Gagal mengunduh faktur:', error);
+        alert('Terjadi kesalahan saat mengunduh gambar faktur.');
       });
     }
 

@@ -62,7 +62,7 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* CSS Khusus Perbaikan Faktur & Total Box Overlap */
+    /* CSS Khusus Perbaikan Faktur & Total Box Overlap (Dioptimalkan agar tidak terpotong) */
     .faktur-th-header {
       background-color: #b30000;
       color: white;
@@ -70,16 +70,17 @@
       vertical-align: middle !important;
       font-size: 9px;
       font-weight: 700;
+      padding: 4px 2px;
     }
     .faktur-th-header:first-child {
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
-      padding-left: 10px;
+      padding-left: 8px;
     }
     .faktur-th-header:last-child {
       border-top-right-radius: 8px;
       border-bottom-right-radius: 8px;
-      padding-right: 10px;
+      padding-right: 8px;
     }
 
     /* Perbaikan Spacing Tabel Ringkasan Faktur */
@@ -583,7 +584,7 @@
       </div>
 
       <div class="safari-scroll-container overflow-y-auto flex-1 min-h-0">
-        <div id="fakturCardCanvas" class="my-3 p-5 bg-white border border-slate-200/80 rounded-2xl shadow-sm text-slate-800 space-y-4">
+        <div id="fakturCardCanvas" class="my-3 p-4 md:p-5 bg-white border border-slate-200/80 rounded-2xl shadow-sm text-slate-800 space-y-4">
           <div class="flex justify-between items-start">
             <div>
               <h2 class="text-2xl font-bold text-red-700 tracking-tight leading-none">FAKTUR</h2>
@@ -595,15 +596,15 @@
             </div>
           </div>
 
-          <!-- TABEL FAKTUR -->
+          <!-- TABEL FAKTUR (DIREVISI: Ditambahkan table-layout: fixed & proporsi % width) -->
           <div class="overflow-hidden">
-            <table class="w-full text-left border-collapse text-xs">
+            <table class="w-full text-left border-collapse text-xs" style="table-layout: fixed;">
               <thead>
                 <tr>
-                  <th class="faktur-th-header text-left">BARANG</th>
-                  <th class="faktur-th-header text-center">QTY</th>
-                  <th class="faktur-th-header text-center">HARGA</th>
-                  <th class="faktur-th-header text-right">TOTAL</th>
+                  <th class="faktur-th-header text-left" style="width: 32%;">BARANG</th>
+                  <th class="faktur-th-header text-center" style="width: 23%;">QTY</th>
+                  <th class="faktur-th-header text-center" style="width: 20%;">HARGA</th>
+                  <th class="faktur-th-header text-right" style="width: 25%;">TOTAL</th>
                 </tr>
               </thead>
               <tbody id="fakturTableBody" class="divide-y divide-slate-100 font-normal text-slate-700"></tbody>
@@ -1042,6 +1043,7 @@
       renderTransactionTable(filtered);
     }
 
+    // FUNGSI BUKA FAKTUR (DIREVISI: Ditambahkan styling padding & white-space agar tidak terpotong)
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1084,13 +1086,13 @@
 
           return `
             <tr class="font-normal">
-              <td class="py-2 px-2.5 font-normal align-middle">
+              <td class="py-2 px-1.5 font-normal align-middle word-break" style="width: 32%;">
                 <div class="font-normal text-slate-900">${item.namaBarang}</div>
                 ${detailSub}
               </td>
-              <td class="py-2 px-1 text-center font-normal text-slate-700 align-middle whitespace-nowrap">${qtyStr}</td>
-              <td class="py-2 px-1 text-center font-normal text-slate-600 align-middle whitespace-nowrap">${item.harga ? formatRupiah(item.harga) : '-'}</td>
-              <td class="py-2 px-2.5 text-right font-normal text-slate-900 align-middle whitespace-nowrap" style="width: 100px;">${formatRupiah(item.subtotal)}</td>
+              <td class="py-2 px-1 text-center font-normal text-slate-700 align-middle" style="width: 23%;">${qtyStr}</td>
+              <td class="py-2 px-1 text-center font-normal text-slate-600 align-middle" style="width: 20%;">${item.harga ? formatRupiah(item.harga) : '-'}</td>
+              <td class="py-2 px-1 text-right font-normal text-slate-900 align-middle whitespace-nowrap" style="width: 25%;">${formatRupiah(item.subtotal)}</td>
             </tr>
           `;
         }).join('');
@@ -1105,8 +1107,8 @@
       if (t.biayaLain && t.biayaLain > 0) {
         htmlRows += `
           <tr class="font-normal">
-            <td colspan="3" class="py-2 px-2.5 text-slate-700 font-normal align-middle">Biaya Lainnya</td>
-            <td class="py-2 px-2.5 text-right font-normal text-slate-900 align-middle whitespace-nowrap" style="width: 100px;">${formatRupiah(t.biayaLain)}</td>
+            <td colspan="3" class="py-2 px-1.5 text-slate-700 font-normal align-middle">Biaya Lainnya</td>
+            <td class="py-2 px-1 text-right font-normal text-slate-900 align-middle whitespace-nowrap" style="width: 25%;">${formatRupiah(t.biayaLain)}</td>
           </tr>
         `;
       }

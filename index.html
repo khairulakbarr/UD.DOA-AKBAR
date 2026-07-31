@@ -2,7 +2,8 @@
 <html lang="id" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Penambahan viewport-fit=cover untuk mengaktifkan Safe Area pada iOS/Layar Penuh -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>UD. DOA AKBAR - Manajemen Tagihan</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +20,23 @@
       height: 100%;
       background-color: #f8fafc; 
       font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Support CSS Safe Area Insets (iOS Home Indicator & Notch) */
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+    .pt-safe {
+      padding-top: env(safe-area-inset-top, 16px);
+    }
+    .pl-safe {
+      padding-left: env(safe-area-inset-left, 0px);
+    }
+    .pr-safe {
+      padding-right: env(safe-area-inset-right, 0px);
+    }
+    .mb-safe {
+      margin-bottom: env(safe-area-inset-bottom, 16px);
     }
 
     .safari-scroll-container {
@@ -98,7 +116,7 @@
     /* iOS Extra Padding Support */
     @supports (-webkit-touch-callout: none) {
       .ios-bottom-pad {
-        padding-bottom: 24px;
+        padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
       }
     }
   </style>
@@ -111,7 +129,7 @@
   <div class="flex h-full w-full overflow-hidden">
 
     <!-- SIDEBAR LEFT -->
-    <aside id="mainSidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-[#0f172a] border-r border-slate-800 p-5 flex flex-col justify-between text-slate-300 shrink-0 h-full -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+    <aside id="mainSidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-[#0f172a] border-r border-slate-800 p-5 pt-safe pb-safe flex flex-col justify-between text-slate-300 shrink-0 h-full -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
       <div>
         <div class="flex items-center justify-between mb-8 px-1">
           <input type="file" id="uploadBrandLogo" accept="image/*" class="hidden" onchange="previewBrandLogo(event)">
@@ -167,7 +185,7 @@
     </aside>
 
     <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 p-4 md:p-6 flex flex-col justify-between h-full overflow-y-auto md:overflow-hidden min-w-0 safari-scroll-container">
+    <main class="flex-1 p-4 md:p-6 pb-safe pt-safe flex flex-col justify-between h-full overflow-y-auto md:overflow-hidden min-w-0 safari-scroll-container">
 
       <!-- TOPBAR / HEADER -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0 mb-2">
@@ -202,7 +220,7 @@
       </div>
 
       <!-- PAGE 1: MONITORING CUSTOMER -->
-      <div id="pageCustomer" class="flex-1 flex flex-col space-y-3 overflow-y-auto safari-scroll-container">
+      <div id="pageCustomer" class="flex-1 flex flex-col space-y-3 overflow-y-auto safari-scroll-container pb-safe">
         
         <div class="flex items-center justify-between shrink-0">
           <div>
@@ -299,7 +317,7 @@
       </div>
 
       <!-- PAGE 2: ARUS RINCIAN PIUTANG -->
-      <div id="pageArusBuku" class="hidden flex-1 bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex-col justify-between overflow-hidden h-full">
+      <div id="pageArusBuku" class="hidden flex-1 bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex-col justify-between overflow-hidden h-full pb-safe">
         <div class="flex items-center justify-between mb-3 shrink-0">
           <div class="flex items-center gap-2 text-xs font-extrabold text-slate-900">
             <i data-lucide="book-open" class="w-4 h-4 text-red-600"></i>
@@ -336,7 +354,7 @@
   </div>
 
   <!-- MODAL RIWAYAT CUSTOMER -->
-  <div id="modalRiwayatCustomer" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
+  <div id="modalRiwayatCustomer" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4 pb-safe pt-safe">
     <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-2xl flex flex-col justify-between overflow-hidden max-h-[90vh]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
         <div class="flex items-center gap-2.5">
@@ -392,7 +410,7 @@
   </div>
 
   <!-- MODAL KELOLA CUSTOMER -->
-  <div id="modalKelolaCustomer" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
+  <div id="modalKelolaCustomer" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 pb-safe pt-safe">
     <div class="bg-white rounded-3xl p-5 md:p-6 shadow-2xl border border-slate-100 w-full max-w-xl flex flex-col max-h-[90vh]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
         <div class="flex items-center gap-2">
@@ -439,7 +457,7 @@
   </div>
 
   <!-- MODAL INPUT TRANSAKSI -->
-  <div id="modalInputTransaksi" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
+  <div id="modalInputTransaksi" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4 pb-safe pt-safe">
     <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-md md:max-w-lg flex flex-col max-h-[90vh] overflow-hidden">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
         <div class="flex items-center gap-2.5">
@@ -555,7 +573,7 @@
   </div>
 
   <!-- MODAL FAKTUR PENJUALAN -->
-  <div id="modalFaktur" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4">
+  <div id="modalFaktur" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4 pb-safe pt-safe">
     <div class="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 w-full max-w-md flex flex-col justify-between overflow-hidden max-h-[90vh]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
         <h3 class="text-xs font-normal uppercase text-slate-400 tracking-wider">Cetak Faktur Penjualan</h3>

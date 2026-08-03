@@ -48,57 +48,156 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* STYLING FAKTUR PENJUALAN (Solusi Bebas Terpotong) */
-    .faktur-container {
+    /* STYLING FAKTUR PENJUALAN DESAIN TERBARU */
+    .faktur-card {
       background-color: #ffffff;
-      padding: 20px;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
       border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e1e4e8;
       box-sizing: border-box;
-      width: 100%;
     }
 
-    .faktur-table {
-      width: 100%;
-      table-layout: fixed;
-      border-collapse: collapse;
+    .faktur-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
     }
 
-    .faktur-th {
+    .faktur-title {
+      color: #b30000;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .faktur-meta {
+      text-align: right;
+      font-size: 11px;
+      color: #666666;
+      line-height: 1.4;
+    }
+
+    .faktur-meta span {
+      font-weight: 700;
+      color: #333333;
+    }
+
+    .faktur-customer {
+      font-size: 13px;
+      color: #444444;
+      margin-bottom: 16px;
+    }
+
+    .faktur-customer strong {
+      color: #111111;
+    }
+
+    .faktur-table-header {
       background-color: #b30000;
       color: #ffffff;
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      padding: 6px 8px;
-      vertical-align: middle;
-    }
-
-    .faktur-th:first-child { border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
-    .faktur-th:last-child { border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
-
-    .faktur-td {
-      padding: 8px 6px;
+      display: flex;
+      padding: 8px 10px;
+      border-radius: 6px;
       font-size: 11px;
-      vertical-align: middle;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 8px;
     }
 
-    .faktur-num {
-      white-space: nowrap !important;
-      font-variant-numeric: tabular-nums;
+    .col-barang { flex: 2; text-align: left; }
+    .col-qty    { flex: 1; text-align: center; }
+    .col-harga  { flex: 1.2; text-align: right; }
+    .col-total  { flex: 1.4; text-align: right; }
+
+    .faktur-item-row {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      font-size: 12px;
+      border-bottom: 1px dashed #eeeeee;
     }
 
-    /* Row Total Box Merah */
-    .faktur-total-box {
-      background-color: #b30000 !important;
-      color: #ffffff !important;
-      font-weight: 800 !important;
-      border-radius: 8px;
+    .item-name {
+      font-weight: 700;
+      color: #222222;
     }
-    .faktur-total-box td {
-      padding: 8px 10px !important;
-      color: #ffffff !important;
+
+    .item-sub {
+      font-size: 10px;
+      color: #888888;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .qty-text { color: #555555; }
+    .harga-text { color: #777777; }
+    .total-text { font-weight: 700; color: #222222; }
+
+    .summary-section {
+      margin-top: 12px;
+      padding: 0 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .summary-label {
+      font-weight: 700;
+      color: #b30000;
+      flex: 1;
+      text-align: right;
+      padding-right: 15px;
+    }
+
+    .summary-value {
+      font-weight: 700;
+      color: #222222;
+      width: 110px;
+      text-align: right;
+    }
+
+    .total-banner {
+      background-color: #b30000;
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+
+    .total-banner .value {
+      width: 110px;
+      text-align: right;
+    }
+
+    .text-green { color: #00875a !important; }
+    .text-red { color: #b30000 !important; }
+
+    .faktur-footer {
+      margin-top: 16px;
+      padding-top: 10px;
+      border-top: 1px dashed #cccccc;
+      font-size: 10px;
+      color: #666666;
+      line-height: 1.5;
+    }
+
+    .faktur-footer strong {
+      color: #333333;
     }
   </style>
 </head>
@@ -553,7 +652,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (REVISI STRUKTUR BEBAS CROP) -->
+  <!-- MODAL FAKTUR PENJUALAN (DISESUAIKAN DENGAN STRUKTUR MODEREN) -->
   <div id="modalFaktur" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4 pb-safe pt-safe">
     <div class="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 w-full max-w-md flex flex-col justify-between overflow-hidden max-h-[90vh]">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -564,65 +663,60 @@
       </div>
 
       <div class="safari-scroll-container overflow-y-auto flex-1 min-h-0 py-2">
-        <!-- CANVAS FAKTUR -->
-        <div id="fakturCardCanvas" class="faktur-container border border-slate-200">
-          <div class="flex justify-between items-start mb-4">
-            <div>
-              <h2 class="text-2xl font-black text-red-700 tracking-tight leading-none">FAKTUR</h2>
-              <p class="text-xs text-slate-600 font-semibold mt-1.5">Kepada: <span id="fakturPelanggan" class="font-extrabold text-slate-900">-</span></p>
-            </div>
-            <div class="text-right text-xs font-medium">
-              <p class="text-slate-700"><span class="text-slate-400">ID:</span> <span id="fakturNoNota" class="font-bold">TX_0000</span></p>
-              <p class="text-slate-500 mt-0.5"><span class="text-slate-400">Tgl:</span> <span id="fakturTanggal">00/00/0000</span></p>
+        <!-- CANVAS FAKTUR SEPERTI KODE BARU -->
+        <div id="fakturCardCanvas" class="faktur-card">
+          <div class="faktur-header">
+            <div class="faktur-title">FAKTUR</div>
+            <div class="faktur-meta">
+              ID: <span id="fakturNoNota">TX_0000</span><br>
+              Tgl: <span id="fakturTanggal">00/00/0000</span>
             </div>
           </div>
 
-          <!-- TABEL DAFTAR BARANG (LAYOUT FIXED) -->
-          <table class="faktur-table">
-            <thead>
-              <tr>
-                <th class="faktur-th text-left" style="width: 32%;">BARANG</th>
-                <th class="faktur-th text-center" style="width: 22%;">QTY</th>
-                <th class="faktur-th text-center" style="width: 20%;">HARGA</th>
-                <th class="faktur-th text-right" style="width: 26%;">TOTAL</th>
-              </tr>
-            </thead>
-            <tbody id="fakturTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
-          </table>
+          <div class="faktur-customer">
+            Kepada: <strong id="fakturPelanggan">-</strong>
+          </div>
 
-          <div class="border-b border-slate-200 my-2"></div>
+          <div class="faktur-table-header">
+            <div class="col-barang">Barang</div>
+            <div class="col-qty">Qty</div>
+            <div class="col-harga">Harga</div>
+            <div class="col-total">Total</div>
+          </div>
 
-          <!-- TABEL SUMMARY PIUTANG -->
-          <table class="faktur-table">
-            <tbody>
-              <tr>
-                <td colspan="3" class="faktur-td text-right font-bold text-red-700">Subtotal</td>
-                <td id="fakturSubtotal" class="faktur-td faktur-num text-right font-bold text-slate-800" style="width: 26%;">Rp 0</td>
-              </tr>
-              <tr>
-                <td colspan="3" class="faktur-td text-right font-bold text-red-700">Sisa Tagihan Lalu</td>
-                <td id="fakturSisaLalu" class="faktur-td faktur-num text-right font-bold text-slate-800" style="width: 26%;">Rp 0</td>
-              </tr>
-              
-              <!-- TOTAL BOX MERAH (REVISI TANPA NEGATIVE PADDING) -->
-              <tr class="faktur-total-box">
-                <td colspan="2" class="faktur-td text-left font-black text-white">TOTAL</td>
-                <td colspan="2" id="fakturTotalTagihan" class="faktur-td faktur-num text-right font-black text-white" style="width: 46%;">Rp 0</td>
-              </tr>
+          <div id="fakturItemsContainer">
+            <!-- Item-item dinamis disisipkan di sini -->
+          </div>
 
-              <tr>
-                <td colspan="3" class="faktur-td text-right font-bold text-emerald-600 pt-3">Bayar/DP</td>
-                <td id="fakturPelunasan" class="faktur-td faktur-num text-right font-bold text-emerald-600 pt-3" style="width: 26%;">-Rp 0</td>
-              </tr>
-              <tr>
-                <td colspan="3" class="faktur-td text-right font-black text-red-700">Sisa Bon</td>
-                <td id="fakturSisaBon" class="faktur-td faktur-num text-right font-black text-red-700" style="width: 26%;">Rp 0</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="summary-section">
+            <div class="summary-row">
+              <span class="summary-label">Subtotal</span>
+              <span id="fakturSubtotal" class="summary-value">Rp 0</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Sisa Tagihan Lalu</span>
+              <span id="fakturSisaLalu" class="summary-value">Rp 0</span>
+            </div>
+          </div>
 
-          <div class="mt-4 pt-3 border-t border-dashed border-slate-300 text-[10px] text-slate-500">
-            <p><span class="font-bold text-slate-700">INFO:</span> Transfer SeaBank <span class="font-bold text-slate-800">9017-6605-7787</span> a.n Khairul Akbar</p>
+          <div class="total-banner">
+            <span>TOTAL</span>
+            <span id="fakturTotalTagihan" class="value">Rp 0</span>
+          </div>
+
+          <div class="summary-section">
+            <div class="summary-row">
+              <span class="summary-label text-green">Bayar/DP</span>
+              <span id="fakturPelunasan" class="summary-value text-green">Rp 0</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label text-red">Sisa Bon</span>
+              <span id="fakturSisaBon" class="summary-value text-red">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="faktur-footer">
+            <strong>INFO:</strong> Transfer SeaBank <strong>9017-6605-7787</strong> a.n Khairul Akbar
           </div>
         </div>
       </div>
@@ -662,14 +756,17 @@
           id: 48410,
           tanggal: "2026-07-28",
           pelanggan: "Bg Misran PJS",
-          rincian: "Ayam Penyet (30ekor)",
-          items: [{ namaBarang: "Ayam Penyet", kg: 0, ekor: 30, harga: 32000, subtotal: 960000 }],
+          rincian: "Ayam Penyet (30ekor), Ayam Potong (25kg 11ekor)",
+          items: [
+            { namaBarang: "Ayam Penyet", kg: 0, ekor: 30, harga: 32000, subtotal: 960000 },
+            { namaBarang: "Ayam Potong", kg: 25, ekor: 11, harga: 31000, subtotal: 775000 }
+          ],
           biayaLain: 0,
-          belanja: 960000,
+          belanja: 1735000,
           sisaLalu: 1680000,
-          totalTagihan: 2640000,
+          totalTagihan: 3415000,
           pelunasan: 1500000,
-          sisa: 1140000
+          sisa: 1915000
         }
       ],
       customers: [
@@ -1009,7 +1106,7 @@
       renderTransactionTable(filtered);
     }
 
-    // BUKA FAKTUR DAN INJEKSI BARIS DENGAN CLASS KHUSUS
+    // BUKA FAKTUR DAN INJEKSI BARIS SESUAI DESAIN CARD BARU
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1027,17 +1124,17 @@
       document.getElementById('fakturSubtotal').innerText = formatRupiah(subtotal);
       document.getElementById('fakturSisaLalu').innerText = formatRupiah(sisaLalu);
       document.getElementById('fakturTotalTagihan').innerText = formatRupiah(totalTagihan);
-      document.getElementById('fakturPelunasan').innerText = bayar > 0 ? `-${formatRupiah(bayar)}` : 'Rp 0';
+      document.getElementById('fakturPelunasan').innerText = bayar > 0 ? `-${formatRupiah(bayar)}` : 'Rp0';
       document.getElementById('fakturSisaBon').innerText = formatRupiah(sisaBon);
 
-      const tableBody = document.getElementById('fakturTableBody');
+      const itemsContainer = document.getElementById('fakturItemsContainer');
       
       let htmlRows = '';
       if (t.items && t.items.length > 0) {
         htmlRows = t.items.map(item => {
           let qtyStr = '-';
           if (item.namaBarang === 'Ayam Potong' && item.kg > 0 && item.ekor > 0) {
-            qtyStr = `${item.kg}kg (${item.ekor}ekor)`;
+            qtyStr = `${item.kg}kg<br><span class="item-sub">(${item.ekor}ekor)</span>`;
           } else if (item.kg > 0) {
             qtyStr = `${item.kg} kg`;
           } else if (item.ekor > 0) {
@@ -1047,43 +1144,45 @@
           let detailSub = '';
           if (item.namaBarang === 'Ayam Potong' && item.kg > 0 && item.ekor > 0) {
             const abw = (item.kg / item.ekor).toFixed(2);
-            detailSub = `<div class="text-[9px] text-slate-500 font-normal leading-tight mt-0.5">ABW: ${abw}kg</div>`;
+            detailSub = `<span class="item-sub">ABW: ${abw}kg</span>`;
           }
 
           return `
-            <tr>
-              <td class="faktur-td text-left font-semibold text-slate-900" style="width: 32%;">
-                <div>${item.namaBarang}</div>
+            <div class="faktur-item-row">
+              <div class="col-barang">
+                <span class="item-name">${item.namaBarang}</span>
                 ${detailSub}
-              </td>
-              <td class="faktur-td text-center text-slate-700" style="width: 22%;">${qtyStr}</td>
-              <td class="faktur-td faktur-num text-center text-slate-600" style="width: 20%;">${item.harga ? formatRupiah(item.harga) : '-'}</td>
-              <td class="faktur-td faktur-num text-right font-bold text-slate-900" style="width: 26%;">${formatRupiah(item.subtotal)}</td>
-            </tr>
+              </div>
+              <div class="col-qty qty-text">${qtyStr}</div>
+              <div class="col-harga harga-text">${item.harga ? formatRupiah(item.harga) : '-'}</div>
+              <div class="col-total total-text">${formatRupiah(item.subtotal)}</div>
+            </div>
           `;
         }).join('');
       } else {
         htmlRows = `
-          <tr>
-            <td colspan="4" class="faktur-td text-center text-slate-600 font-medium py-3">${t.rincian || 'Pembayaran / Pelunasan Piutang'}</td>
-          </tr>
+          <div class="faktur-item-row" style="justify-content: center; color: #666;">
+            ${t.rincian || 'Pembayaran / Pelunasan Piutang'}
+          </div>
         `;
       }
 
       if (t.biayaLain && t.biayaLain > 0) {
         htmlRows += `
-          <tr>
-            <td colspan="3" class="faktur-td text-left font-medium text-slate-700">Biaya Lainnya</td>
-            <td class="faktur-td faktur-num text-right font-bold text-slate-900" style="width: 26%;">${formatRupiah(t.biayaLain)}</td>
-          </tr>
+          <div class="faktur-item-row">
+            <div class="col-barang"><span class="item-name">Biaya Lainnya</span></div>
+            <div class="col-qty qty-text">-</div>
+            <div class="col-harga harga-text">-</div>
+            <div class="col-total total-text">${formatRupiah(t.biayaLain)}</div>
+          </div>
         `;
       }
 
-      tableBody.innerHTML = htmlRows;
+      itemsContainer.innerHTML = htmlRows;
       toggleModalFaktur(true);
     }
 
-    // FUNGSI UNDUH PNG MENGGUNAKAN HTML-TO-IMAGE (SOLUSI ANTI TERPOTONG 100%)
+    // FUNGSI UNDUH PNG MENGGUNAKAN HTML-TO-IMAGE
     function downloadFakturPNG() {
       const node = document.getElementById('fakturCardCanvas');
       if (!node) return;
@@ -1092,7 +1191,6 @@
       const tanggalStr = document.getElementById('fakturTanggal').innerText.replace(/\//g, '-');
       const filename = `Faktur_${pelangganNama}_${tanggalStr}.png`;
 
-      // html-to-image merender seluruh node DOM secara presisi tanpa pemotongan
       htmlToImage.toPng(node, {
         pixelRatio: 2,
         backgroundColor: '#ffffff',
@@ -1328,7 +1426,7 @@
       document.getElementById('formTransaksiBaru').reset();
       document.getElementById('inputBiayaLain').value = '';
       document.getElementById('inputSisaTagihanLalu').value = "Rp 0";
-      document.getElementById('inputSisaTagihanLalu').getAttribute('data-val', 0);
+      document.getElementById('inputSisaTagihanLalu').setAttribute('data-val', 0);
       
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('inputTanggal').value = today;

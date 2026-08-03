@@ -114,6 +114,12 @@
       padding-right: 12px !important;
     }
 
+    /* Helper CSS untuk wrap teks alamat/nama barang */
+    .word-break {
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
     /* iOS Extra Padding Support */
     @supports (-webkit-touch-callout: none) {
       .ios-bottom-pad {
@@ -910,7 +916,7 @@
 
       const tbody = document.getElementById('riwayatTableBody');
       if (listTx.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada catatan transaksi untuk ${namaCustomer}.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada catatan transaksi untuk ${namaCustomer}.</td></tr>`;
       } else {
         tbody.innerHTML = listTx.map(t => `
           <tr class="hover:bg-slate-50 transition">

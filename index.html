@@ -2,7 +2,7 @@
 <html lang="id" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <!-- 1. META VIEWPORT DENGAN COVER SAFE-AREA SAFARI -->
+  <!-- META VIEWPORT DENGAN COVER SAFE-AREA SAFARI -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>UD. DOA AKBAR - Manajemen Tagihan</title>
   
@@ -16,7 +16,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
   
   <style>
-    /* 2. CSS PERBAIKAN TINGGI VIEWPORT & SCROLL SAFARI */
+    /* CSS PERBAIKAN TINGGI VIEWPORT & SCROLL SAFARI */
     html, body {
       margin: 0;
       padding: 0;
@@ -117,11 +117,11 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* STYLING FAKTUR PENJUALAN */
+    /* STYLING FAKTUR PENJUALAN - PROPORSI KOLOM DIPERBAIKI */
     .faktur-card {
       background-color: #ffffff;
       width: 100%;
-      max-width: 340px;
+      max-width: 350px;
       margin: 0 auto;
       border-radius: 16px;
       padding: 20px;
@@ -170,6 +170,7 @@
       background-color: #b30000;
       color: #ffffff;
       display: flex;
+      align-items: center;
       padding: 8px 10px;
       border-radius: 6px;
       font-size: 11px;
@@ -178,10 +179,11 @@
       margin-bottom: 8px;
     }
 
-    .col-barang { flex: 2; text-align: left; }
-    .col-qty    { flex: 1; text-align: center; }
-    .col-harga  { flex: 1.2; text-align: right; }
-    .col-total  { flex: 1.4; text-align: right; }
+    /* PENYESUAIAN FLEX/WIDTH KOLOM TABEL FAKTUR AGAR TIDAK BERTUMPUK */
+    .col-barang { flex: 2.2; text-align: left; padding-right: 4px; }
+    .col-qty    { flex: 1.0; text-align: center; }
+    .col-harga  { flex: 1.3; text-align: right; padding-right: 10px; }
+    .col-total  { flex: 1.5; text-align: right; }
 
     .faktur-item-row {
       display: flex;
@@ -204,8 +206,8 @@
     }
 
     .qty-text { color: #555555; }
-    .harga-text { color: #777777; }
-    .total-text { font-weight: 700; color: #222222; }
+    .harga-text { color: #666666; font-weight: 500; }
+    .total-text { font-weight: 800; color: #111111; }
 
     .summary-section {
       margin-top: 12px;
@@ -605,7 +607,7 @@
     </div>
   </div>
 
-  <!-- MODAL INPUT TRANSAKSI (BOTTOM SHEET UTAMA - MENCEGAH TERPOTONG) -->
+  <!-- MODAL INPUT TRANSAKSI (BOTTOM SHEET UTAMA) -->
   <div id="modalInputTransaksi" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -746,11 +748,12 @@
             Kepada: <strong id="fakturPelanggan">-</strong>
           </div>
 
+          <!-- TATA LETAK HEADER COLUMNS PROPORSI BARU -->
           <div class="faktur-table-header">
-            <div class="col-barang">Barang</div>
-            <div class="col-qty">Qty</div>
-            <div class="col-harga">Harga</div>
-            <div class="col-total">Total</div>
+            <div class="col-barang">BARANG</div>
+            <div class="col-qty">QTY</div>
+            <div class="col-harga">HARGA</div>
+            <div class="col-total">TOTAL</div>
           </div>
 
           <div id="fakturItemsContainer">

@@ -2,6 +2,7 @@
 <html lang="id" class="h-full">
 <head>
   <meta charset="UTF-8">
+  <!-- 1. META VIEWPORT DENGAN COVER SAFE-AREA SAFARI -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>UD. DOA AKBAR - Manajemen Tagihan</title>
   
@@ -15,15 +16,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
   
   <style>
+    /* 2. CSS PERBAIKAN TINGGI VIEWPORT & SCROLL SAFARI */
     html, body {
-      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100dvh; /* Dynamic Viewport Height untuk iOS Safari */
       background-color: #f8fafc; 
       font-family: 'Plus Jakarta Sans', sans-serif;
+      overscroll-behavior-y: none; /* Mencegah bounce scroll di iOS */
     }
 
     /* Support CSS Safe Area Insets */
-    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
-    .pt-safe { padding-top: env(safe-area-inset-top, 16px); }
+    .pb-safe { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+    .pt-safe { padding-top: max(16px, env(safe-area-inset-top)); }
 
     .safari-scroll-container {
       -webkit-overflow-scrolling: touch;
@@ -39,6 +45,69 @@
     .custom-v-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     .custom-v-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
 
+    /* Interactive Button & Card Feedback */
+    .btn-interactive {
+      transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+    }
+    .btn-interactive:active {
+      transform: scale(0.96);
+    }
+
+    /* Bottom Sheet Modal Style untuk Safari */
+    .modal-sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    @media (min-width: 768px) {
+      .modal-sheet-overlay {
+        align-items: center;
+      }
+    }
+
+    .modal-sheet-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-sheet-content {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 20px;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+      max-height: 85dvh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    @media (min-width: 768px) {
+      .modal-sheet-content {
+        border-radius: 24px;
+        transform: scale(0.95);
+        max-height: 90dvh;
+      }
+    }
+
+    .modal-sheet-overlay.active .modal-sheet-content {
+      transform: translateY(0) scale(1);
+    }
+
     /* Sticky Header Table Style */
     .sticky-table-header th {
       position: sticky;
@@ -48,7 +117,7 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* STYLING FAKTUR PENJUALAN DESAIN TERBARU */
+    /* STYLING FAKTUR PENJUALAN */
     .faktur-card {
       background-color: #ffffff;
       width: 100%;
@@ -201,12 +270,12 @@
     }
   </style>
 </head>
-<body class="text-slate-800 antialiased font-sans h-screen h-[100dvh] overflow-hidden">
+<body class="text-slate-800 antialiased font-sans min-h-[100dvh] flex flex-col overflow-x-hidden">
 
   <!-- OVERLAY MOBILE SIDEBAR -->
   <div id="sidebarOverlay" onclick="toggleSidebar(false)" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
 
-  <div class="flex h-full w-full overflow-hidden">
+  <div class="flex flex-1 w-full overflow-hidden min-h-[100dvh]">
 
     <!-- SIDEBAR LEFT -->
     <aside id="mainSidebar" class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-[#0f172a] border-r border-slate-800 p-5 pt-safe pb-safe flex flex-col justify-between text-slate-300 shrink-0 h-full -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
@@ -243,13 +312,13 @@
           </a>
           
           <!-- MENU MONITORING CUSTOMER -->
-          <button id="menuCustomer" onclick="switchPage('customer')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition">
+          <button id="menuCustomer" onclick="switchPage('customer')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition btn-interactive">
             <i data-lucide="users" class="w-4 h-4"></i>
             <span>Monitoring Customer</span>
           </button>
 
           <!-- MENU ARUS RINCIAN PIUTANG -->
-          <button id="menuArusBuku" onclick="switchPage('arusbuku')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold">
+          <button id="menuArusBuku" onclick="switchPage('arusbuku')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold btn-interactive">
             <i data-lucide="book-open" class="w-4 h-4"></i>
             <span>Arus Rincian Piutang</span>
           </button>
@@ -265,12 +334,12 @@
     </aside>
 
     <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 p-4 md:p-6 pb-safe pt-safe flex flex-col justify-between h-full overflow-y-auto md:overflow-hidden min-w-0 safari-scroll-container">
+    <main class="flex-1 p-4 md:p-6 pb-safe pt-safe flex flex-col justify-between h-full min-w-0 overflow-y-auto safari-scroll-container">
 
       <!-- TOPBAR / HEADER -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0 mb-2">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0 mb-3">
         <div class="flex items-center gap-2 w-full md:w-auto">
-          <button onclick="toggleSidebar(true)" class="p-2 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 hover:text-red-600 md:hidden transition shrink-0" title="Buka Menu Sidebar">
+          <button onclick="toggleSidebar(true)" class="p-2 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 hover:text-red-600 md:hidden transition shrink-0 btn-interactive" title="Buka Menu Sidebar">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
 
@@ -293,20 +362,20 @@
             <span class="text-[11px]">Peureulak, IDN</span>
           </div>
 
-          <button onclick="loadDataFromSheets()" title="Tarik Data Terbaru" class="p-2 bg-white border border-slate-200 rounded-full shadow-sm text-slate-600 hover:text-red-600 transition">
+          <button onclick="loadDataFromSheets()" title="Tarik Data Terbaru" class="p-2 bg-white border border-slate-200 rounded-full shadow-sm text-slate-600 hover:text-red-600 transition btn-interactive">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-orange-500"></i>
           </button>
         </div>
       </div>
 
       <!-- PAGE 1: MONITORING CUSTOMER -->
-      <div id="pageCustomer" class="flex-1 flex flex-col space-y-3 overflow-y-auto safari-scroll-container pb-safe">
+      <div id="pageCustomer" class="flex-1 flex flex-col space-y-3 overflow-y-auto safari-scroll-container">
         
-        <div class="flex items-center justify-between shrink-0">
+        <div class="flex items-center justify-between shrink-0 pt-1">
           <div>
             <h2 class="text-base md:text-lg font-extrabold text-slate-900 tracking-tight">Kartu Ringkasan Tagihan</h2>
           </div>
-          <button onclick="openModalTambah()" class="flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md shadow-red-600/25 transition">
+          <button onclick="openModalTambah()" class="flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-md shadow-red-600/25 transition btn-interactive">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>Tambah Transaksi Baru</span>
           </button>
@@ -314,7 +383,7 @@
 
         <!-- 3 CARDS SUMMARY -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 shrink-0">
-          <div class="bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
+          <div class="bg-gradient-to-br from-red-600 via-red-500 to-rose-700 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24 btn-interactive">
             <div>
               <p class="text-[10px] text-red-100 font-semibold">Total Penjualan Hari Ini/Periode</p>
               <h3 id="cardTotalPenjualan" class="text-lg font-extrabold tracking-tight">Rp 0</h3>
@@ -325,7 +394,7 @@
             </div>
           </div>
 
-          <div class="bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
+          <div class="bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24 btn-interactive">
             <div>
               <p class="text-[10px] text-orange-100 font-semibold">Total Diterima / Pelunasan</p>
               <h3 id="cardTotalDiterima" class="text-lg font-extrabold tracking-tight">Rp 0</h3>
@@ -336,7 +405,7 @@
             </div>
           </div>
 
-          <div class="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24">
+          <div class="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 text-white p-3.5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between h-24 btn-interactive">
             <div>
               <p class="text-[10px] text-slate-400 font-semibold">Sisa Piutang Aktif (Real-time)</p>
               <h3 id="cardSisaPiutang" class="text-lg font-extrabold tracking-tight text-orange-400">Rp 0</h3>
@@ -352,7 +421,7 @@
         <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex flex-col justify-between overflow-hidden shrink-0">
           <div class="flex items-center justify-between mb-2">
             <h3 class="text-xs font-extrabold text-slate-900">Daftar Tagihan Customer</h3>
-            <button onclick="toggleModalCustomer(true)" class="flex items-center gap-1.5 bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-xl hover:bg-slate-800 shadow-sm transition">
+            <button onclick="toggleModalCustomer(true)" class="flex items-center gap-1.5 bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-xl hover:bg-slate-800 shadow-sm transition btn-interactive">
               <i data-lucide="settings-2" class="w-3 h-3 text-orange-400"></i>
               <span>Kelola / Edit</span>
             </button>
@@ -397,7 +466,7 @@
       </div>
 
       <!-- PAGE 2: ARUS RINCIAN PIUTANG -->
-      <div id="pageArusBuku" class="hidden flex-1 bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex-col justify-between overflow-hidden h-full pb-safe">
+      <div id="pageArusBuku" class="hidden flex-1 bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200 flex-col justify-between overflow-hidden h-full">
         <div class="flex items-center justify-between mb-3 shrink-0">
           <div class="flex items-center gap-2 text-xs font-extrabold text-slate-900">
             <i data-lucide="book-open" class="w-4 h-4 text-red-600"></i>
@@ -405,7 +474,7 @@
           </div>
         </div>
 
-        <div class="safari-scroll-container overflow-x-auto overflow-y-auto custom-v-scrollbar border border-slate-100 rounded-xl relative flex-1 max-h-[calc(100vh-180px)]">
+        <div class="safari-scroll-container overflow-x-auto overflow-y-auto custom-v-scrollbar border border-slate-100 rounded-xl relative flex-1 max-h-[calc(100dvh-180px)]">
           <table class="w-full text-left border-collapse min-w-[850px]">
             <thead class="sticky-table-header text-slate-700 text-[9px] uppercase font-extrabold border-b border-slate-200">
               <tr>
@@ -433,9 +502,9 @@
     </main>
   </div>
 
-  <!-- MODAL RIWAYAT CUSTOMER -->
-  <div id="modalRiwayatCustomer" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4 pb-safe pt-safe">
-    <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-2xl flex flex-col justify-between overflow-hidden max-h-[90vh]">
+  <!-- MODAL RIWAYAT CUSTOMER (BOTTOM SHEET / SAFARI SAFE) -->
+  <div id="modalRiwayatCustomer" class="modal-sheet-overlay">
+    <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-red-600 to-orange-500 text-white flex items-center justify-center shadow-md shadow-red-600/20">
@@ -484,14 +553,14 @@
       </div>
 
       <div class="pt-3 border-t border-slate-100 flex justify-end shrink-0 mt-2">
-        <button onclick="toggleModalRiwayat(false)" class="px-4 py-2 bg-slate-900 text-white font-extrabold text-xs rounded-xl hover:bg-slate-800 transition">Tutup</button>
+        <button onclick="toggleModalRiwayat(false)" class="px-4 py-2 bg-slate-900 text-white font-extrabold text-xs rounded-xl hover:bg-slate-800 transition btn-interactive">Tutup</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL KELOLA CUSTOMER -->
-  <div id="modalKelolaCustomer" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 pb-safe pt-safe">
-    <div class="bg-white rounded-3xl p-5 md:p-6 shadow-2xl border border-slate-100 w-full max-w-xl flex flex-col max-h-[90vh]">
+  <div id="modalKelolaCustomer" class="modal-sheet-overlay">
+    <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
         <div class="flex items-center gap-2">
           <div class="w-7 h-7 rounded-xl bg-slate-900 text-orange-400 flex items-center justify-center shadow-md">
@@ -521,7 +590,7 @@
         </div>
         <div class="flex items-center gap-2">
           <input type="text" id="inputHpCustomer" placeholder="No. WhatsApp / HP (Opsional)" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-orange-500">
-          <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-4 py-1.5 rounded-xl shadow-md transition shrink-0">Simpan Customer</button>
+          <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs px-4 py-1.5 rounded-xl shadow-md transition shrink-0 btn-interactive">Simpan Customer</button>
         </div>
       </form>
 
@@ -536,9 +605,9 @@
     </div>
   </div>
 
-  <!-- MODAL INPUT TRANSAKSI -->
-  <div id="modalInputTransaksi" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4 pb-safe pt-safe">
-    <div class="bg-white rounded-3xl p-4 md:p-5 shadow-2xl border border-slate-100 w-full max-w-md md:max-w-lg flex flex-col max-h-[90vh] overflow-hidden">
+  <!-- MODAL INPUT TRANSAKSI (BOTTOM SHEET UTAMA - MENCEGAH TERPOTONG) -->
+  <div id="modalInputTransaksi" class="modal-sheet-overlay">
+    <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
         <div class="flex items-center gap-2.5">
           <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 text-white flex items-center justify-center shadow-md shadow-red-600/20">
@@ -555,7 +624,7 @@
       </div>
 
       <form id="formTransaksiBaru" onsubmit="handleFormSubmit(event)" class="flex flex-col flex-1 min-h-0">
-        <div class="safari-scroll-container overflow-y-auto custom-v-scrollbar py-2.5 space-y-2 text-xs pr-1 flex-1 max-h-[calc(90vh-120px)]">
+        <div class="safari-scroll-container overflow-y-auto custom-v-scrollbar py-2.5 space-y-2 text-xs pr-1 flex-1">
           <input type="hidden" id="editIndex" value="-1">
 
           <div class="grid grid-cols-2 gap-2">
@@ -598,7 +667,7 @@
               </div>
             </div>
 
-            <button type="button" onclick="tambahItemNota()" class="w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-xl shadow-sm transition flex items-center justify-center gap-1 text-[11px]">
+            <button type="button" onclick="tambahItemNota()" class="w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-xl shadow-sm transition flex items-center justify-center gap-1 text-[11px] btn-interactive">
               <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-orange-400"></i>
               <span>Masukkan ke Nota</span>
             </button>
@@ -643,8 +712,8 @@
           </div>
         </div>
 
-        <div class="pt-2 border-t border-slate-100 shrink-0">
-          <button type="submit" id="btnSubmitForm" class="w-full py-2.5 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-red-600/25 transition">
+        <div class="pt-2 border-t border-slate-100 shrink-0 mt-1">
+          <button type="submit" id="btnSubmitForm" class="w-full py-2.5 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-red-600/25 transition btn-interactive">
             Simpan Transaksi & Sinkron Cloud
           </button>
         </div>
@@ -652,9 +721,9 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (DISESUAIKAN DENGAN STRUKTUR MODEREN) -->
-  <div id="modalFaktur" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-3 md:p-4 pb-safe pt-safe">
-    <div class="bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 w-full max-w-md flex flex-col justify-between overflow-hidden max-h-[90vh]">
+  <!-- MODAL FAKTUR PENJUALAN -->
+  <div id="modalFaktur" class="modal-sheet-overlay">
+    <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
         <h3 class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Cetak Faktur Penjualan</h3>
         <button onclick="toggleModalFaktur(false)" class="p-1 text-slate-400 hover:text-slate-700 rounded-full transition">
@@ -663,7 +732,7 @@
       </div>
 
       <div class="safari-scroll-container overflow-y-auto flex-1 min-h-0 py-2">
-        <!-- CANVAS FAKTUR SEPERTI KODE BARU -->
+        <!-- CANVAS FAKTUR -->
         <div id="fakturCardCanvas" class="faktur-card">
           <div class="faktur-header">
             <div class="faktur-title">FAKTUR</div>
@@ -722,11 +791,11 @@
       </div>
 
       <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 shrink-0">
-        <button onclick="downloadFakturPNG()" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs">
+        <button onclick="downloadFakturPNG()" class="py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs btn-interactive">
           <i data-lucide="download" class="w-4 h-4 text-emerald-200"></i>
           <span>Unduh PNG</span>
         </button>
-        <button onclick="window.print()" class="py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs">
+        <button onclick="window.print()" class="py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs btn-interactive">
           <i data-lucide="printer" class="w-4 h-4 text-orange-400"></i>
           <span>Cetak Faktur</span>
         </button>
@@ -777,6 +846,15 @@
 
     let tempItems = [];
 
+    // FUNGSI LOCK SCROLL BACKGROUND DI SAFARI SAAT MODAL AKTIF
+    function setScrollLock(lock) {
+      if (lock) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
     function switchPage(page) {
       const pageCustomer = document.getElementById('pageCustomer');
       const pageArusBuku = document.getElementById('pageArusBuku');
@@ -789,16 +867,16 @@
         pageArusBuku.classList.add('hidden');
         pageArusBuku.classList.remove('flex');
 
-        menuCustomer.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition";
-        menuArusBuku.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold";
+        menuCustomer.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition btn-interactive";
+        menuArusBuku.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold btn-interactive";
       } else if (page === 'arusbuku') {
         pageCustomer.classList.add('hidden');
         pageCustomer.classList.remove('flex');
         pageArusBuku.classList.remove('hidden');
         pageArusBuku.classList.add('flex');
 
-        menuArusBuku.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition";
-        menuCustomer.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold";
+        menuArusBuku.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition btn-interactive";
+        menuCustomer.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold btn-interactive";
       }
 
       toggleSidebar(false);
@@ -937,7 +1015,7 @@
         const totalCustomerSisa = customerSisaMap[key] || 0;
 
         return `
-          <button onclick="bukaRiwayatCustomer('${c.nama}')" class="min-w-[130px] p-2 rounded-xl text-left border bg-slate-50 border-slate-200 hover:bg-orange-50 hover:border-orange-400 transition shrink-0 group" title="Klik untuk lihat riwayat transaksi ${c.nama}">
+          <button onclick="bukaRiwayatCustomer('${c.nama}')" class="min-w-[130px] p-2 rounded-xl text-left border bg-slate-50 border-slate-200 hover:bg-orange-50 hover:border-orange-400 transition shrink-0 group btn-interactive" title="Klik untuk lihat riwayat transaksi ${c.nama}">
             <div class="flex items-center justify-between gap-1">
               <p class="text-[10px] font-bold text-slate-900 group-hover:text-orange-600 truncate">${c.nama}</p>
               <span class="text-[8px] font-extrabold ${c.kategori === 'Tetap' ? 'text-blue-600' : 'text-slate-400'}">(${c.kategori || 'Umum'})</span>
@@ -990,7 +1068,9 @@
     }
 
     function toggleModalRiwayat(show) {
-      document.getElementById('modalRiwayatCustomer').classList.toggle('hidden', !show);
+      const el = document.getElementById('modalRiwayatCustomer');
+      if (show) { el.classList.add('active'); setScrollLock(true); } 
+      else { el.classList.remove('active'); setScrollLock(false); }
     }
 
     function renderPiutangChart() {
@@ -1070,16 +1150,16 @@
           <td class="p-2.5 text-emerald-600 font-bold">${formatRupiah(t.pelunasan)}</td>
           <td class="p-2.5 font-extrabold ${Number(t.sisa) > 0 ? 'text-red-600' : 'text-emerald-600'}">${formatRupiah(t.sisa)}</td>
           <td class="p-2.5 text-center">
-            <button onclick="bukaFaktur(${state.transactions.indexOf(t)})" class="p-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg transition" title="Buka / Cetak Faktur">
+            <button onclick="bukaFaktur(${state.transactions.indexOf(t)})" class="p-1.5 bg-red-100 text-red-600 hover:bg-red-200 rounded-lg transition btn-interactive" title="Buka / Cetak Faktur">
               <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
             </button>
           </td>
           <td class="p-2.5 text-center">
             <div class="flex items-center justify-center gap-1">
-              <button onclick="editTransaksi(${state.transactions.indexOf(t)})" class="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-slate-100 transition" title="Edit Form Transaksi">
+              <button onclick="editTransaksi(${state.transactions.indexOf(t)})" class="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-slate-100 transition btn-interactive" title="Edit Form Transaksi">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
               </button>
-              <button onclick="hapusTransaksi(${state.transactions.indexOf(t)})" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-slate-100 transition" title="Hapus Transaksi">
+              <button onclick="hapusTransaksi(${state.transactions.indexOf(t)})" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-slate-100 transition btn-interactive" title="Hapus Transaksi">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
@@ -1106,7 +1186,6 @@
       renderTransactionTable(filtered);
     }
 
-    // BUKA FAKTUR DAN INJEKSI BARIS SESUAI DESAIN CARD BARU
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1182,7 +1261,6 @@
       toggleModalFaktur(true);
     }
 
-    // FUNGSI UNDUH PNG MENGGUNAKAN HTML-TO-IMAGE
     function downloadFakturPNG() {
       const node = document.getElementById('fakturCardCanvas');
       if (!node) return;
@@ -1208,7 +1286,11 @@
       });
     }
 
-    function toggleModalFaktur(show) { document.getElementById('modalFaktur').classList.toggle('hidden', !show); }
+    function toggleModalFaktur(show) { 
+      const el = document.getElementById('modalFaktur');
+      if (show) { el.classList.add('active'); setScrollLock(true); } 
+      else { el.classList.remove('active'); setScrollLock(false); }
+    }
 
     function openModalTambah() {
       document.getElementById('editIndex').value = "-1";
@@ -1433,10 +1515,22 @@
       kalkulasiNota();
     }
 
-    function toggleModal(show) { document.getElementById('modalInputTransaksi').classList.toggle('hidden', !show); }
+    function toggleModal(show) { 
+      const el = document.getElementById('modalInputTransaksi');
+      if (show) { el.classList.add('active'); setScrollLock(true); } 
+      else { el.classList.remove('active'); setScrollLock(false); }
+    }
+
     function toggleModalCustomer(show) { 
-      document.getElementById('modalKelolaCustomer').classList.toggle('hidden', !show); 
-      if (show) renderCustomerListModal();
+      const el = document.getElementById('modalKelolaCustomer');
+      if (show) { 
+        el.classList.add('active'); 
+        setScrollLock(true); 
+        renderCustomerListModal();
+      } else { 
+        el.classList.remove('active'); 
+        setScrollLock(false); 
+      }
     }
 
     function tambahCustomerBaru(e) {
@@ -1491,7 +1585,7 @@
               <span class="font-extrabold text-xs text-red-600">${formatRupiah(currentSisa)}</span>
             </td>
             <td class="py-2.5 px-2 text-center">
-              <button onclick="hapusCustomer(${i})" class="p-1 text-slate-400 hover:text-red-600 rounded transition">
+              <button onclick="hapusCustomer(${i})" class="p-1 text-slate-400 hover:text-red-600 rounded transition btn-interactive">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </td>

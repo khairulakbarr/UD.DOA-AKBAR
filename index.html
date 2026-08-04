@@ -117,9 +117,7 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* ========================================================= */
-    /* STYLING FAKTUR PENJUALAN - PERBAIKAN ALIGNMENT (GRID SYSTEM) */
-    /* ========================================================= */
+    /* STYLING FAKTUR PENJUALAN - PROPORSI KOLOM DIPERBAIKI */
     .faktur-card {
       background-color: #ffffff;
       width: 100%;
@@ -168,31 +166,29 @@
       color: #111111;
     }
 
-    /* KUNCI UTAMA: Mengunci 4 Kolom dengan CSS Grid yang Sama */
-    .faktur-grid-row {
-      display: grid;
-      grid-template-columns: 2.2fr 1.1fr 1.3fr 1.5fr; /* Rasio lebar kolom seragam */
-      align-items: center;
-      padding: 8px 10px;
-    }
-
     .faktur-table-header {
       background-color: #b30000;
       color: #ffffff;
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    /* Alignment Teks Kolom Presisi */
-    .col-barang { text-align: left; }
-    .col-qty    { text-align: center; }
-    .col-harga  { text-align: right; }
-    .col-total  { text-align: right; }
+    /* PENYESUAIAN FLEX/WIDTH KOLOM TABEL FAKTUR AGAR TIDAK BERTUMPUK */
+    .col-barang { flex: 2.2; text-align: left; padding-right: 4px; }
+    .col-qty    { flex: 1.0; text-align: center; }
+    .col-harga  { flex: 1.3; text-align: right; padding-right: 10px; }
+    .col-total  { flex: 1.5; text-align: right; }
 
     .faktur-item-row {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
       font-size: 12px;
       border-bottom: 1px dashed #eeeeee;
     }
@@ -200,14 +196,13 @@
     .item-name {
       font-weight: 700;
       color: #222222;
-      display: block;
     }
 
     .item-sub {
       font-size: 10px;
       color: #888888;
       display: block;
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
     .qty-text { color: #555555; }
@@ -753,8 +748,8 @@
             Kepada: <strong id="fakturPelanggan">-</strong>
           </div>
 
-          <!-- HEADER BOX MERAH DENGAN GRID SYSTEM -->
-          <div class="faktur-grid-row faktur-table-header">
+          <!-- TATA LETAK HEADER COLUMNS PROPORSI BARU -->
+          <div class="faktur-table-header">
             <div class="col-barang">BARANG</div>
             <div class="col-qty">QTY</div>
             <div class="col-harga">HARGA</div>
@@ -1194,7 +1189,6 @@
       renderTransactionTable(filtered);
     }
 
-    /* BUKA FAKTUR - DENGAN BARIS GRID PRESISI SEJAJAR HEADER */
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1236,7 +1230,7 @@
           }
 
           return `
-            <div class="faktur-grid-row faktur-item-row">
+            <div class="faktur-item-row">
               <div class="col-barang">
                 <span class="item-name">${item.namaBarang}</span>
                 ${detailSub}
@@ -1249,15 +1243,15 @@
         }).join('');
       } else {
         htmlRows = `
-          <div class="faktur-grid-row faktur-item-row" style="grid-template-columns: 1fr; text-align: center; color: #666;">
-            <div>${t.rincian || 'Pembayaran / Pelunasan Piutang'}</div>
+          <div class="faktur-item-row" style="justify-content: center; color: #666;">
+            ${t.rincian || 'Pembayaran / Pelunasan Piutang'}
           </div>
         `;
       }
 
       if (t.biayaLain && t.biayaLain > 0) {
         htmlRows += `
-          <div class="faktur-grid-row faktur-item-row">
+          <div class="faktur-item-row">
             <div class="col-barang"><span class="item-name">Biaya Lainnya</span></div>
             <div class="col-qty qty-text">-</div>
             <div class="col-harga harga-text">-</div>

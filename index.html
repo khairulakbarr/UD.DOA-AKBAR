@@ -723,7 +723,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN -->
+  <!-- MODAL FAKTUR PENJUALAN (DISESUAIKAN DENGAN SKEMA KODE TERBARU) -->
   <div id="modalFaktur" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -762,7 +762,7 @@
 
           <div class="summary-section">
             <div class="summary-row">
-              <span class="summary-label">Subtotal</span>
+              <span class="summary-label">Belanja Hari Ini</span>
               <span id="fakturSubtotal" class="summary-value">Rp 0</span>
             </div>
             <div class="summary-row">
@@ -772,7 +772,7 @@
           </div>
 
           <div class="total-banner">
-            <span>TOTAL</span>
+            <span>TOTAL TAGIHAN</span>
             <span id="fakturTotalTagihan" class="value">Rp 0</span>
           </div>
 
@@ -782,7 +782,7 @@
               <span id="fakturPelunasan" class="summary-value text-green">Rp 0</span>
             </div>
             <div class="summary-row">
-              <span class="summary-label text-red">Sisa Bon</span>
+              <span class="summary-label text-red">Sisa Bon Akhir</span>
               <span id="fakturSisaBon" class="summary-value text-red">Rp 0</span>
             </div>
           </div>
@@ -1189,6 +1189,7 @@
       renderTransactionTable(filtered);
     }
 
+    /* FUNGSI BUKA FAKTUR YANG SUDAH DIPERBAIKI SESUAI SKEMA KODE TERBARU */
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1198,15 +1199,15 @@
       document.getElementById('fakturNoNota').innerText = `TX_${t.id || (10000 + index)}`;
       
       const subtotal = Number(t.belanja || 0);
-      const sisaLalu = hitungSisaTagihanLalu(t.pelanggan, t.id, t.tanggal);
-      const totalTagihan = subtotal + sisaLalu;
+      const sisaLalu = (t.sisaLalu !== undefined) ? Number(t.sisaLalu) : hitungSisaTagihanLalu(t.pelanggan, t.id, t.tanggal);
+      const totalTagihan = (t.totalTagihan !== undefined) ? Number(t.totalTagihan) : (subtotal + sisaLalu);
       const bayar = Number(t.pelunasan || 0);
-      const sisaBon = totalTagihan - bayar;
+      const sisaBon = (t.sisa !== undefined) ? Number(t.sisa) : (totalTagihan - bayar);
 
       document.getElementById('fakturSubtotal').innerText = formatRupiah(subtotal);
       document.getElementById('fakturSisaLalu').innerText = formatRupiah(sisaLalu);
       document.getElementById('fakturTotalTagihan').innerText = formatRupiah(totalTagihan);
-      document.getElementById('fakturPelunasan').innerText = bayar > 0 ? `-${formatRupiah(bayar)}` : 'Rp0';
+      document.getElementById('fakturPelunasan').innerText = bayar > 0 ? `-${formatRupiah(bayar)}` : 'Rp 0';
       document.getElementById('fakturSisaBon').innerText = formatRupiah(sisaBon);
 
       const itemsContainer = document.getElementById('fakturItemsContainer');
@@ -1216,7 +1217,7 @@
         htmlRows = t.items.map(item => {
           let qtyStr = '-';
           if (item.namaBarang === 'Ayam Potong' && item.kg > 0 && item.ekor > 0) {
-            qtyStr = `${item.kg}kg<br><span class="item-sub">(${item.ekor}ekor)</span>`;
+            qtyStr = `${item.kg} kg<br><span class="item-sub">(${item.ekor} ekor)</span>`;
           } else if (item.kg > 0) {
             qtyStr = `${item.kg} kg`;
           } else if (item.ekor > 0) {
@@ -1226,7 +1227,7 @@
           let detailSub = '';
           if (item.namaBarang === 'Ayam Potong' && item.kg > 0 && item.ekor > 0) {
             const abw = (item.kg / item.ekor).toFixed(2);
-            detailSub = `<span class="item-sub">ABW: ${abw}kg</span>`;
+            detailSub = `<span class="item-sub">ABW: ${abw} kg</span>`;
           }
 
           return `
@@ -1243,13 +1244,13 @@
         }).join('');
       } else {
         htmlRows = `
-          <div class="faktur-item-row" style="justify-content: center; color: #666;">
+          <div class="faktur-item-row" style="justify-content: center; color: #666; font-weight: 600;">
             ${t.rincian || 'Pembayaran / Pelunasan Piutang'}
           </div>
         `;
       }
 
-      if (t.biayaLain && t.biayaLain > 0) {
+      if (t.biayaLain && Number(t.biayaLain) > 0) {
         htmlRows += `
           <div class="faktur-item-row">
             <div class="col-barang"><span class="item-name">Biaya Lainnya</span></div>

@@ -2,7 +2,6 @@
 <html lang="id" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <!-- META VIEWPORT DENGAN COVER SAFE-AREA SAFARI -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>UD. DOA AKBAR - Manajemen Tagihan</title>
   
@@ -12,22 +11,19 @@
   
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Library html-to-image untuk konversi PNG yang sangat presisi 1:1 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
   
   <style>
-    /* CSS PERBAIKAN TINGGI VIEWPORT & SCROLL SAFARI */
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
-      min-height: 100dvh; /* Dynamic Viewport Height untuk iOS Safari */
+      min-height: 100dvh;
       background-color: #f8fafc; 
       font-family: 'Plus Jakarta Sans', sans-serif;
-      overscroll-behavior-y: none; /* Mencegah bounce scroll di iOS */
+      overscroll-behavior-y: none;
     }
 
-    /* Support CSS Safe Area Insets */
     .pb-safe { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
     .pt-safe { padding-top: max(16px, env(safe-area-inset-top)); }
 
@@ -45,7 +41,6 @@
     .custom-v-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     .custom-v-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 9999px; }
 
-    /* Interactive Button & Card Feedback */
     .btn-interactive {
       transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
     }
@@ -53,7 +48,6 @@
       transform: scale(0.96);
     }
 
-    /* Bottom Sheet Modal Style untuk Safari */
     .modal-sheet-overlay {
       position: fixed;
       inset: 0;
@@ -108,7 +102,6 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Sticky Header Table Style */
     .sticky-table-header th {
       position: sticky;
       top: 0;
@@ -117,7 +110,7 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* --- STYLING PERBAIKAN FAKTUR SAFARI & CROSS-BROWSER --- */
+    /* --- STYLING FAKTUR CANVAS SAFARI PROOF --- */
     #fakturCardCanvas {
       background-color: #ffffff !important;
       color: #1f2937 !important;
@@ -133,7 +126,6 @@
       border: 1px solid #f3f4f6;
     }
 
-    /* Mengunci lebar kolom tabel agar presisi 100% lurus */
     #fakturCardCanvas table {
       width: 100% !important;
       border-collapse: separate !important;
@@ -149,9 +141,8 @@
       line-height: 1.35 !important;
     }
 
-    /* Style Header Tabel Merah Melengkung (REVISI POIN 1: ALIGNMENT CENTER UNTUK BARANG & TOTAL) */
     .faktur-header-row th {
-      background-color: #b91c1c !important; /* Red 700 */
+      background-color: #b91c1c !important;
       color: #ffffff !important;
       font-weight: 700 !important;
       font-size: 11px !important;
@@ -167,7 +158,6 @@
       border-bottom-right-radius: 8px !important;
     }
 
-    /* Detail sub-teks di bawah nama barang */
     .sub-detail-barang {
       display: block;
       font-size: 10px;
@@ -218,13 +208,11 @@
             <span>Monitoring Supplier</span>
           </a>
           
-          <!-- MENU MONITORING CUSTOMER -->
           <button id="menuCustomer" onclick="switchPage('customer')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-md shadow-red-600/30 text-xs transition btn-interactive">
             <i data-lucide="users" class="w-4 h-4"></i>
             <span>Monitoring Customer</span>
           </button>
 
-          <!-- MENU ARUS RINCIAN PIUTANG -->
           <button id="menuArusBuku" onclick="switchPage('arusbuku')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition text-xs font-semibold btn-interactive">
             <i data-lucide="book-open" class="w-4 h-4"></i>
             <span>Arus Rincian Piutang</span>
@@ -240,13 +228,13 @@
       </div>
     </aside>
 
-    <!-- MAIN CONTENT AREA -->
+    <!-- MAIN CONTENT -->
     <main class="flex-1 p-4 md:p-6 pb-safe pt-safe flex flex-col justify-between h-full min-w-0 overflow-y-auto safari-scroll-container">
 
-      <!-- TOPBAR / HEADER -->
+      <!-- TOPBAR -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0 mb-3">
         <div class="flex items-center gap-2 w-full md:w-auto">
-          <button onclick="toggleSidebar(true)" class="p-2 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 hover:text-red-600 md:hidden transition shrink-0 btn-interactive" title="Buka Menu Sidebar">
+          <button onclick="toggleSidebar(true)" class="p-2 bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 hover:text-red-600 md:hidden transition shrink-0 btn-interactive">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
 
@@ -409,7 +397,7 @@
     </main>
   </div>
 
-  <!-- MODAL RIWAYAT CUSTOMER (BOTTOM SHEET / SAFARI SAFE) -->
+  <!-- MODAL RIWAYAT CUSTOMER -->
   <div id="modalRiwayatCustomer" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3 shrink-0">
@@ -512,7 +500,7 @@
     </div>
   </div>
 
-  <!-- MODAL INPUT TRANSAKSI (BOTTOM SHEET UTAMA) -->
+  <!-- MODAL INPUT TRANSAKSI -->
   <div id="modalInputTransaksi" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -628,7 +616,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (LAYOUT PERBAIKAN POIN 1 & 2 DENGAN REVISI TERBARU) -->
+  <!-- MODAL FAKTUR PENJUALAN (LAYOUT SAFARI PROOF DENGAN TABEL MURNI) -->
   <div id="modalFaktur" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -659,7 +647,7 @@
             Kepada: <strong id="fakturPelanggan" class="text-gray-900 font-bold">Bg Misran PJS</strong>
           </div>
 
-          <!-- TABEL PRODUCT DETAIL (REVISI POIN 1: BARANG & TOTAL CENTER ALIGNED) -->
+          <!-- TABEL PRODUCT DETAIL -->
           <div class="mb-3">
             <table>
               <thead>
@@ -676,35 +664,59 @@
             </table>
           </div>
 
-          <!-- RINCIAN TAGIHAN (REVISI POIN 2: UKURAN FONT SAMA RATA SEMUA / UNIFORM 11PX) -->
-          <div class="space-y-1.5 pt-1 text-[11px]">
+          <!-- RINCIAN TAGIHAN (FIXED SAFARI STRUCTURE WITH INLINE TABLE MURNI) -->
+          <div style="margin-top: 8px; width: 100%;">
             
-            <div class="flex justify-end items-center gap-3">
-              <span class="font-bold text-red-700 text-right">Belanja Hari Ini</span>
-              <span id="fakturSubtotal" class="font-bold text-gray-900 w-28 text-right whitespace-nowrap">Rp0</span>
-            </div>
-
-            <div class="flex justify-end items-center gap-3">
-              <span class="font-bold text-red-700 text-right">Sisa Tagihan Lalu</span>
-              <span id="fakturSisaLalu" class="font-bold text-gray-900 w-28 text-right whitespace-nowrap">Rp0</span>
-            </div>
+            <table style="width: 100% !important; border-collapse: collapse !important; border-spacing: 0 !important; margin-bottom: 6px;">
+              <tr>
+                <td style="text-align: right; padding: 3px 8px 3px 0; font-weight: 700; color: #b91c1c; font-size: 11px; white-space: nowrap;">
+                  Belanja Hari Ini
+                </td>
+                <td id="fakturSubtotal" style="width: 110px; text-align: right; padding: 3px 0; font-weight: 700; color: #111827; font-size: 11px; white-space: nowrap;">
+                  Rp0
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: right; padding: 3px 8px 3px 0; font-weight: 700; color: #b91c1c; font-size: 11px; white-space: nowrap;">
+                  Sisa Tagihan Lalu
+                </td>
+                <td id="fakturSisaLalu" style="width: 110px; text-align: right; padding: 3px 0; font-weight: 700; color: #111827; font-size: 11px; white-space: nowrap;">
+                  Rp0
+                </td>
+              </tr>
+            </table>
 
             <!-- BANNER TOTAL TAGIHAN -->
-            <div class="flex justify-between items-center bg-red-700 text-white px-3 py-2.5 rounded-xl font-bold my-2 text-xs">
-              <span>TOTAL TAGIHAN</span>
-              <span id="fakturTotalTagihan" class="whitespace-nowrap">Rp0</span>
-            </div>
+            <table style="width: 100% !important; background-color: #b91c1c !important; border-radius: 10px !important; margin: 6px 0 !important; border-collapse: collapse !important;">
+              <tr>
+                <td style="padding: 8px 12px; text-align: left; font-weight: 800; color: #ffffff; font-size: 11px; white-space: nowrap; vertical-align: middle;">
+                  TOTAL TAGIHAN
+                </td>
+                <td id="fakturTotalTagihan" style="padding: 8px 12px; text-align: right; font-weight: 800; color: #ffffff; font-size: 12px; white-space: nowrap; vertical-align: middle;">
+                  Rp0
+                </td>
+              </tr>
+            </table>
 
-            <!-- STATUS BAYAR & SISA BON (FONT BANYAK DISAMAAN RATAKAN) -->
-            <div class="flex justify-end items-center gap-3">
-              <span class="font-bold text-emerald-600 text-right">Bayar/DP</span>
-              <span id="fakturPelunasan" class="font-bold text-emerald-600 w-28 text-right whitespace-nowrap">Rp0</span>
-            </div>
-
-            <div class="flex justify-end items-center gap-3">
-              <span class="font-bold text-red-700 text-right">Sisa Bon Akhir</span>
-              <span id="fakturSisaBon" class="font-bold text-red-700 w-28 text-right whitespace-nowrap">Rp0</span>
-            </div>
+            <!-- STATUS BAYAR & SISA BON AKHIR -->
+            <table style="width: 100% !important; border-collapse: collapse !important; border-spacing: 0 !important; margin-top: 6px;">
+              <tr>
+                <td style="text-align: right; padding: 3px 8px 3px 0; font-weight: 700; color: #059669; font-size: 11px; white-space: nowrap;">
+                  Bayar/DP
+                </td>
+                <td id="fakturPelunasan" style="width: 110px; text-align: right; padding: 3px 0; font-weight: 700; color: #059669; font-size: 11px; white-space: nowrap;">
+                  Rp0
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: right; padding: 3px 8px 3px 0; font-weight: 700; color: #b91c1c; font-size: 11px; white-space: nowrap;">
+                  Sisa Bon Akhir
+                </td>
+                <td id="fakturSisaBon" style="width: 110px; text-align: right; padding: 3px 0; font-weight: 700; color: #b91c1c; font-size: 11px; white-space: nowrap;">
+                  Rp0
+                </td>
+              </tr>
+            </table>
 
           </div>
 
@@ -759,7 +771,6 @@
 
     let tempItems = [];
 
-    // FUNGSI LOCK SCROLL BACKGROUND DI SAFARI SAAT MODAL AKTIF
     function setScrollLock(lock) {
       if (lock) {
         document.body.style.overflow = 'hidden';
@@ -1099,7 +1110,6 @@
       renderTransactionTable(filtered);
     }
 
-    /* --- FUNGSI BUKA FAKTUR DENGAN BARIS PENJUALAN KETENGAH SESUAI INSTRUKSI --- */
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1178,7 +1188,6 @@
       toggleModalFaktur(true);
     }
 
-    /* --- FUNGSI UNDUH FAKTUR SAFARI OPTIMIZED --- */
     function downloadFakturPNG() {
       const node = document.getElementById('fakturCardCanvas');
       if (!node) return;

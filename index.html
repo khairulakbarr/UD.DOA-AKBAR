@@ -149,7 +149,7 @@
       line-height: 1.35 !important;
     }
 
-    /* Style Header Tabel Merah Melengkung */
+    /* Style Header Tabel Merah Melengkung (REVISI POIN 1: ALIGNMENT CENTER UNTUK BARANG & TOTAL) */
     .faktur-header-row th {
       background-color: #b91c1c !important; /* Red 700 */
       color: #ffffff !important;
@@ -628,7 +628,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (LAYOUT PERBAIKAN POIN 1 & 2) -->
+  <!-- MODAL FAKTUR PENJUALAN (LAYOUT PERBAIKAN POIN 1 & 2 DENGAN REVISI TERBARU) -->
   <div id="modalFaktur" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -659,15 +659,15 @@
             Kepada: <strong id="fakturPelanggan" class="text-gray-900 font-bold">Bg Misran PJS</strong>
           </div>
 
-          <!-- TABEL PRODUCT DETAIL (POIN 1: ALOKASI LEBAR KOLOM LEBIH LAPANG & KELAS NO-WRAP) -->
+          <!-- TABEL PRODUCT DETAIL (REVISI POIN 1: BARANG & TOTAL CENTER ALIGNED) -->
           <div class="mb-3">
             <table>
               <thead>
                 <tr class="faktur-header-row">
-                  <th style="width: 36%; text-align: left;">BARANG</th>
+                  <th style="width: 36%; text-align: center;">BARANG</th>
                   <th style="width: 14%; text-align: center;">QTY</th>
                   <th style="width: 24%; text-align: right;">HARGA</th>
-                  <th style="width: 26%; text-align: right;">TOTAL</th>
+                  <th style="width: 26%; text-align: center;">TOTAL</th>
                 </tr>
               </thead>
               <tbody id="fakturItemsContainer" class="text-gray-800 divide-y divide-dashed divide-gray-200">
@@ -676,8 +676,8 @@
             </table>
           </div>
 
-          <!-- RINCIAN TAGIHAN (POIN 2: NAMA LABEL & NOMINAL RAPAT KE KANAN VIA JUSTIFY-END) -->
-          <div class="space-y-1.5 pt-1 text-xs">
+          <!-- RINCIAN TAGIHAN (REVISI POIN 2: UKURAN FONT SAMA RATA SEMUA / UNIFORM 11PX) -->
+          <div class="space-y-1.5 pt-1 text-[11px]">
             
             <div class="flex justify-end items-center gap-3">
               <span class="font-bold text-red-700 text-right">Belanja Hari Ini</span>
@@ -690,20 +690,20 @@
             </div>
 
             <!-- BANNER TOTAL TAGIHAN -->
-            <div class="flex justify-between items-center bg-red-700 text-white px-3 py-2.5 rounded-xl font-bold my-2 text-sm">
+            <div class="flex justify-between items-center bg-red-700 text-white px-3 py-2.5 rounded-xl font-bold my-2 text-xs">
               <span>TOTAL TAGIHAN</span>
               <span id="fakturTotalTagihan" class="whitespace-nowrap">Rp0</span>
             </div>
 
-            <!-- STATUS BAYAR & SISA BON -->
-            <div class="flex justify-end items-center gap-3 text-emerald-600 font-bold">
-              <span class="text-right">Bayar/DP</span>
-              <span id="fakturPelunasan" class="w-28 text-right whitespace-nowrap">Rp0</span>
+            <!-- STATUS BAYAR & SISA BON (FONT BANYAK DISAMAAN RATAKAN) -->
+            <div class="flex justify-end items-center gap-3">
+              <span class="font-bold text-emerald-600 text-right">Bayar/DP</span>
+              <span id="fakturPelunasan" class="font-bold text-emerald-600 w-28 text-right whitespace-nowrap">Rp0</span>
             </div>
 
-            <div class="flex justify-end items-center gap-3 text-red-700 font-bold text-sm">
-              <span class="text-right">Sisa Bon Akhir</span>
-              <span id="fakturSisaBon" class="w-28 text-right whitespace-nowrap">Rp0</span>
+            <div class="flex justify-end items-center gap-3">
+              <span class="font-bold text-red-700 text-right">Sisa Bon Akhir</span>
+              <span id="fakturSisaBon" class="font-bold text-red-700 w-28 text-right whitespace-nowrap">Rp0</span>
             </div>
 
           </div>
@@ -1099,7 +1099,7 @@
       renderTransactionTable(filtered);
     }
 
-    /* --- FUNGSI BUKA FAKTUR DENGAN RENDER BARIS YAG RAPI & PRESISI --- */
+    /* --- FUNGSI BUKA FAKTUR DENGAN BARIS PENJUALAN KETENGAH SESUAI INSTRUKSI --- */
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1187,7 +1187,6 @@
       const tanggalStr = document.getElementById('fakturTanggal').innerText.replace(/\//g, '-');
       const filename = `Faktur_${pelangganNama}_${tanggalStr}.png`;
 
-      // Mengamankan render font & canvas di WebKit Safari
       if (document.fonts) {
         document.fonts.ready.then(() => {
           renderPng(node, filename);

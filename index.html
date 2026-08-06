@@ -117,158 +117,63 @@
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
 
-    /* STYLING FAKTUR PENJUALAN - PROPORSI KOLOM DIPERBAIKI */
-    .faktur-card {
-      background-color: #ffffff;
-      width: 100%;
-      max-width: 350px;
-      margin: 0 auto;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e1e4e8;
+    /* --- [POIN 1] STYLING PERBAIKAN FAKTUR SAFARI & CROSS-BROWSER --- */
+    #fakturCardCanvas {
+      background-color: #ffffff !important;
+      color: #1f2937 !important;
+      -webkit-text-size-adjust: 100%;
+      font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
       box-sizing: border-box;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f3f4f6;
     }
 
-    .faktur-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
+    /* Mengunci lebar kolom tabel agar presisi 100% lurus */
+    #fakturCardCanvas table {
+      width: 100% !important;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+      table-layout: fixed !important;
     }
 
-    .faktur-title {
-      color: #b30000;
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
+    #fakturCardCanvas th, 
+    #fakturCardCanvas td {
+      vertical-align: top !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      line-height: 1.35 !important;
     }
 
-    .faktur-meta {
-      text-align: right;
-      font-size: 11px;
-      color: #666666;
-      line-height: 1.4;
-    }
-
-    .faktur-meta span {
-      font-weight: 700;
-      color: #333333;
-    }
-
-    .faktur-customer {
-      font-size: 13px;
-      color: #444444;
-      margin-bottom: 16px;
-    }
-
-    .faktur-customer strong {
-      color: #111111;
-    }
-
-    .faktur-table-header {
-      background-color: #b30000;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      padding: 8px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
+    /* Style Header Tabel Merah Melengkung */
+    .faktur-header-row th {
+      background-color: #b91c1c !important; /* Red 700 */
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 11px !important;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      padding: 8px 6px !important;
+    }
+    .faktur-header-row th:first-child {
+      border-top-left-radius: 8px !important;
+      border-bottom-left-radius: 8px !important;
+    }
+    .faktur-header-row th:last-child {
+      border-top-right-radius: 8px !important;
+      border-bottom-right-radius: 8px !important;
     }
 
-    /* PENYESUAIAN FLEX/WIDTH KOLOM TABEL FAKTUR AGAR TIDAK BERTUMPUK */
-    .col-barang { flex: 2.2; text-align: left; padding-right: 4px; }
-    .col-qty    { flex: 1.0; text-align: center; }
-    .col-harga  { flex: 1.3; text-align: right; padding-right: 10px; }
-    .col-total  { flex: 1.5; text-align: right; }
-
-    .faktur-item-row {
-      display: flex;
-      align-items: center;
-      padding: 8px 10px;
-      font-size: 12px;
-      border-bottom: 1px dashed #eeeeee;
-    }
-
-    .item-name {
-      font-weight: 700;
-      color: #222222;
-    }
-
-    .item-sub {
-      font-size: 10px;
-      color: #888888;
+    /* Detail sub-teks di bawah nama barang */
+    .sub-detail-barang {
       display: block;
-      margin-top: 2px;
-    }
-
-    .qty-text { color: #555555; }
-    .harga-text { color: #666666; font-weight: 500; }
-    .total-text { font-weight: 800; color: #111111; }
-
-    .summary-section {
-      margin-top: 12px;
-      padding: 0 10px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-
-    .summary-label {
-      font-weight: 700;
-      color: #b30000;
-      flex: 1;
-      text-align: right;
-      padding-right: 15px;
-    }
-
-    .summary-value {
-      font-weight: 700;
-      color: #222222;
-      width: 110px;
-      text-align: right;
-    }
-
-    .total-banner {
-      background-color: #b30000;
-      color: #ffffff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      border-radius: 6px;
-      font-weight: 800;
-      font-size: 13px;
-      margin: 10px 0;
-    }
-
-    .total-banner .value {
-      width: 110px;
-      text-align: right;
-    }
-
-    .text-green { color: #00875a !important; }
-    .text-red { color: #b30000 !important; }
-
-    .faktur-footer {
-      margin-top: 16px;
-      padding-top: 10px;
-      border-top: 1px dashed #cccccc;
       font-size: 10px;
-      color: #666666;
-      line-height: 1.5;
-    }
-
-    .faktur-footer strong {
-      color: #333333;
+      color: #6b7280;
+      font-weight: 400;
+      margin-top: 1px;
     }
   </style>
 </head>
@@ -723,7 +628,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (DISESUAIKAN DENGAN SKEMA KODE TERBARU) -->
+  <!-- --- [POIN 2] MODAL FAKTUR PENJUALAN (LAYOUT 100% SESUAI ACUAN GAMBAR) --- -->
   <div id="modalFaktur" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -733,63 +638,79 @@
         </button>
       </div>
 
-      <div class="safari-scroll-container overflow-y-auto flex-1 min-h-0 py-2">
-        <!-- CANVAS FAKTUR -->
-        <div id="fakturCardCanvas" class="faktur-card">
-          <div class="faktur-header">
-            <div class="faktur-title">FAKTUR</div>
-            <div class="faktur-meta">
-              ID: <span id="fakturNoNota">TX_0000</span><br>
-              Tgl: <span id="fakturTanggal">00/00/0000</span>
+      <div class="safari-scroll-container overflow-y-auto flex-1 min-h-0 py-3">
+        
+        <!-- AREA STRUKTUR FAKTUR UNTUK CANVAS & PRINT -->
+        <div id="fakturCardCanvas" class="text-xs">
+          
+          <!-- HEADER FAKTUR -->
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <h1 class="text-2xl font-black text-red-700 tracking-wider">FAKTUR</h1>
+            </div>
+            <div class="text-right text-[11px] text-gray-600">
+              <p>ID: <strong id="fakturNoNota" class="text-gray-900">TX_19314</strong></p>
+              <p>Tgl: <strong id="fakturTanggal" class="text-gray-900">05/08/2026</strong></p>
             </div>
           </div>
 
-          <div class="faktur-customer">
-            Kepada: <strong id="fakturPelanggan">-</strong>
+          <!-- INFORMASI PEMBELI -->
+          <div class="mb-4 text-xs text-gray-700">
+            Kepada: <strong id="fakturPelanggan" class="text-gray-900 font-bold">Bg Misran PJS</strong>
           </div>
 
-          <!-- TATA LETAK HEADER COLUMNS PROPORSI BARU -->
-          <div class="faktur-table-header">
-            <div class="col-barang">BARANG</div>
-            <div class="col-qty">QTY</div>
-            <div class="col-harga">HARGA</div>
-            <div class="col-total">TOTAL</div>
+          <!-- TABEL PRODUCT DETAIL (LEBAR KOLOM TERKUNCI PERSENTASE PAS) -->
+          <div class="mb-3">
+            <table>
+              <thead>
+                <tr class="faktur-header-row">
+                  <th style="width: 38%; text-align: left;">BARANG</th>
+                  <th style="width: 18%; text-align: center;">QTY</th>
+                  <th style="width: 20%; text-align: center;">HARGA</th>
+                  <th style="width: 24%; text-align: right;">TOTAL</th>
+                </tr>
+              </thead>
+              <tbody id="fakturItemsContainer" class="text-gray-800 divide-y divide-dashed divide-gray-200">
+                <!-- Baris Dinamis JS Disisipkan di Sini -->
+              </tbody>
+            </table>
           </div>
 
-          <div id="fakturItemsContainer">
-            <!-- Item-item dinamis disisipkan di sini -->
-          </div>
-
-          <div class="summary-section">
-            <div class="summary-row">
-              <span class="summary-label">Belanja Hari Ini</span>
-              <span id="fakturSubtotal" class="summary-value">Rp 0</span>
+          <!-- RINGKASAN SUB-TOTAL & BELANJA -->
+          <div class="space-y-1.5 pt-1 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-red-700">Belanja Hari Ini</span>
+              <span id="fakturSubtotal" class="font-bold text-gray-900">Rp0</span>
             </div>
-            <div class="summary-row">
-              <span class="summary-label">Sisa Tagihan Lalu</span>
-              <span id="fakturSisaLalu" class="summary-value">Rp 0</span>
+
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-red-700">Sisa Tagihan Lalu</span>
+              <span id="fakturSisaLalu" class="font-bold text-gray-900">Rp0</span>
+            </div>
+
+            <!-- BANNER TOTAL TAGIHAN -->
+            <div class="flex justify-between items-center bg-red-700 text-white px-3 py-2.5 rounded-xl font-bold my-2 text-sm">
+              <span>TOTAL TAGIHAN</span>
+              <span id="fakturTotalTagihan">Rp0</span>
+            </div>
+
+            <!-- STATUS BAYAR & SISA BON -->
+            <div class="flex justify-between items-center text-emerald-600 font-bold">
+              <span>Bayar/DP</span>
+              <span id="fakturPelunasan">Rp0</span>
+            </div>
+
+            <div class="flex justify-between items-center text-red-700 font-bold text-sm">
+              <span>Sisa Bon Akhir</span>
+              <span id="fakturSisaBon">Rp0</span>
             </div>
           </div>
 
-          <div class="total-banner">
-            <span>TOTAL TAGIHAN</span>
-            <span id="fakturTotalTagihan" class="value">Rp 0</span>
+          <!-- FOOTER REKENING -->
+          <div class="mt-4 pt-3 border-t border-dashed border-gray-300 text-center text-[10px] text-gray-500">
+            <strong>INFO:</strong> Transfer SeaBank <strong class="text-gray-800">9017-6605-7787</strong> a.n Khairul Akbar
           </div>
 
-          <div class="summary-section">
-            <div class="summary-row">
-              <span class="summary-label text-green">Bayar/DP</span>
-              <span id="fakturPelunasan" class="summary-value text-green">Rp 0</span>
-            </div>
-            <div class="summary-row">
-              <span class="summary-label text-red">Sisa Bon Akhir</span>
-              <span id="fakturSisaBon" class="summary-value text-red">Rp 0</span>
-            </div>
-          </div>
-
-          <div class="faktur-footer">
-            <strong>INFO:</strong> Transfer SeaBank <strong>9017-6605-7787</strong> a.n Khairul Akbar
-          </div>
         </div>
       </div>
 
@@ -812,33 +733,20 @@
     let state = {
       transactions: [
         {
-          id: 48409,
-          tanggal: "2026-07-27",
+          id: 19314,
+          tanggal: "2026-08-05",
           pelanggan: "Bg Misran PJS",
-          rincian: "Ayam Potong (56kg 30ekor)",
-          items: [{ namaBarang: "Ayam Potong", kg: 56, ekor: 30, harga: 30000, subtotal: 1680000 }],
-          biayaLain: 0,
-          belanja: 1680000,
-          sisaLalu: 0,
-          totalTagihan: 1680000,
-          pelunasan: 0,
-          sisa: 1680000
-        },
-        {
-          id: 48410,
-          tanggal: "2026-07-28",
-          pelanggan: "Bg Misran PJS",
-          rincian: "Ayam Penyet (30ekor), Ayam Potong (25kg 11ekor)",
+          rincian: "Ayam Potong (61kg 29ekor), Ayam Penyet (70ekor)",
           items: [
-            { namaBarang: "Ayam Penyet", kg: 0, ekor: 30, harga: 32000, subtotal: 960000 },
-            { namaBarang: "Ayam Potong", kg: 25, ekor: 11, harga: 31000, subtotal: 775000 }
+            { namaBarang: "Ayam Potong", kg: 61, ekor: 29, harga: 31000, subtotal: 1891000 },
+            { namaBarang: "Ayam Penyet", kg: 0, ekor: 70, harga: 33000, subtotal: 2310000 }
           ],
-          biayaLain: 0,
-          belanja: 1735000,
-          sisaLalu: 1680000,
-          totalTagihan: 3415000,
+          biayaLain: 15000,
+          belanja: 4216000,
+          sisaLalu: 1915000,
+          totalTagihan: 6131000,
           pelunasan: 1500000,
-          sisa: 1915000
+          sisa: 4631000
         }
       ],
       customers: [
@@ -1189,7 +1097,7 @@
       renderTransactionTable(filtered);
     }
 
-    /* FUNGSI BUKA FAKTUR YANG SUDAH DIPERBAIKI SESUAI SKEMA KODE TERBARU */
+    /* --- [POIN 3.1] FUNGSI BUKA FAKTUR DENGAN LAYOUT PEMISAH DINAMIS --- */
     function bukaFaktur(index) {
       const t = state.transactions[index];
       if (!t) return;
@@ -1207,7 +1115,7 @@
       document.getElementById('fakturSubtotal').innerText = formatRupiah(subtotal);
       document.getElementById('fakturSisaLalu').innerText = formatRupiah(sisaLalu);
       document.getElementById('fakturTotalTagihan').innerText = formatRupiah(totalTagihan);
-      document.getElementById('fakturPelunasan').innerText = bayar > 0 ? `-${formatRupiah(bayar)}` : 'Rp 0';
+      document.getElementById('fakturPelunasan').innerText = bayar > 0 ? `-${formatRupiah(bayar)}` : 'Rp0';
       document.getElementById('fakturSisaBon').innerText = formatRupiah(sisaBon);
 
       const itemsContainer = document.getElementById('fakturItemsContainer');
@@ -1216,8 +1124,8 @@
       if (t.items && t.items.length > 0) {
         htmlRows = t.items.map(item => {
           let qtyStr = '-';
-          if (item.namaBarang === 'Ayam Potong' && item.kg > 0 && item.ekor > 0) {
-            qtyStr = `${item.kg} kg<br><span class="item-sub">(${item.ekor} ekor)</span>`;
+          if (item.namaBarang === 'Ayam Potong' && item.kg > 0) {
+            qtyStr = `${item.kg} kg`;
           } else if (item.kg > 0) {
             qtyStr = `${item.kg} kg`;
           } else if (item.ekor > 0) {
@@ -1227,37 +1135,40 @@
           let detailSub = '';
           if (item.namaBarang === 'Ayam Potong' && item.kg > 0 && item.ekor > 0) {
             const abw = (item.kg / item.ekor).toFixed(2);
-            detailSub = `<span class="item-sub">ABW: ${abw} kg</span>`;
+            detailSub = `
+              <span class="sub-detail-barang">(${item.ekor} ekor)</span>
+              <span class="sub-detail-barang">ABW: ${abw} kg</span>
+            `;
           }
 
           return `
-            <div class="faktur-item-row">
-              <div class="col-barang">
-                <span class="item-name">${item.namaBarang}</span>
+            <tr>
+              <td class="py-2.5 px-1 font-normal">
+                ${item.namaBarang}
                 ${detailSub}
-              </div>
-              <div class="col-qty qty-text">${qtyStr}</div>
-              <div class="col-harga harga-text">${item.harga ? formatRupiah(item.harga) : '-'}</div>
-              <div class="col-total total-text">${formatRupiah(item.subtotal)}</div>
-            </div>
+              </td>
+              <td class="py-2.5 px-1 text-center text-gray-500 font-normal">${qtyStr}</td>
+              <td class="py-2.5 px-1 text-center text-gray-500 font-normal">${item.harga ? formatRupiah(item.harga) : '-'}</td>
+              <td class="py-2.5 px-1 text-right text-gray-500 font-normal">${formatRupiah(item.subtotal)}</td>
+            </tr>
           `;
         }).join('');
       } else {
         htmlRows = `
-          <div class="faktur-item-row" style="justify-content: center; color: #666; font-weight: 600;">
-            ${t.rincian || 'Pembayaran / Pelunasan Piutang'}
-          </div>
+          <tr>
+            <td colspan="4" class="py-2.5 px-1 text-center font-normal text-gray-500">
+              ${t.rincian || 'Pembayaran / Pelunasan Piutang'}
+            </td>
+          </tr>
         `;
       }
 
       if (t.biayaLain && Number(t.biayaLain) > 0) {
         htmlRows += `
-          <div class="faktur-item-row">
-            <div class="col-barang"><span class="item-name">Biaya Lainnya</span></div>
-            <div class="col-qty qty-text">-</div>
-            <div class="col-harga harga-text">-</div>
-            <div class="col-total total-text">${formatRupiah(t.biayaLain)}</div>
-          </div>
+          <tr>
+            <td colspan="3" class="py-2.5 px-1 font-normal">Biaya Lainnya</td>
+            <td class="py-2.5 px-1 text-right text-gray-500 font-normal">${formatRupiah(t.biayaLain)}</td>
+          </tr>
         `;
       }
 
@@ -1265,6 +1176,7 @@
       toggleModalFaktur(true);
     }
 
+    /* --- [POIN 3.2] FUNGSI UNDUH FAKTUR SAFARI OPTIMIZED --- */
     function downloadFakturPNG() {
       const node = document.getElementById('fakturCardCanvas');
       if (!node) return;
@@ -1273,8 +1185,19 @@
       const tanggalStr = document.getElementById('fakturTanggal').innerText.replace(/\//g, '-');
       const filename = `Faktur_${pelangganNama}_${tanggalStr}.png`;
 
+      // Mengamankan render font & canvas di WebKit Safari
+      if (document.fonts) {
+        document.fonts.ready.then(() => {
+          renderPng(node, filename);
+        });
+      } else {
+        renderPng(node, filename);
+      }
+    }
+
+    function renderPng(node, filename) {
       htmlToImage.toPng(node, {
-        pixelRatio: 2,
+        pixelRatio: 3,
         backgroundColor: '#ffffff',
         cacheBust: true,
       })
@@ -1282,7 +1205,9 @@
         const link = document.createElement('a');
         link.download = filename;
         link.href = dataUrl;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
       })
       .catch(function (error) {
         console.error('Gagal mengunduh gambar faktur:', error);

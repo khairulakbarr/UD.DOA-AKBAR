@@ -616,7 +616,7 @@
     </div>
   </div>
 
-  <!-- MODAL FAKTUR PENJUALAN (LAYOUT SAFARI PROOF DENGAN TABEL MURNI) -->
+  <!-- MODAL FAKTUR PENJUALAN -->
   <div id="modalFaktur" class="modal-sheet-overlay">
     <div class="modal-sheet-content">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
@@ -664,7 +664,7 @@
             </table>
           </div>
 
-          <!-- RINCIAN TAGIHAN (FIXED SAFARI STRUCTURE WITH INLINE TABLE MURNI) -->
+          <!-- RINCIAN TAGIHAN -->
           <div style="margin-top: 8px; width: 100%;">
             
             <table style="width: 100% !important; border-collapse: collapse !important; border-spacing: 0 !important; margin-bottom: 6px;">
@@ -834,14 +834,13 @@
       return dateStr;
     };
 
-    lucide.createIcons();
-
     document.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split('T')[0];
       const dateInput = document.getElementById('inputTanggal');
       if (dateInput) dateInput.value = today;
       
       loadDataFromSheets();
+      lucide.createIcons();
     });
 
     async function loadDataFromSheets() {
@@ -1114,7 +1113,7 @@
       const t = state.transactions[index];
       if (!t) return;
 
-      document.getElementById('fakturPelanggan').innerText = t.pelanggan;
+      document.getElementById('fakturPelanggan').innerText = t.pelanggan || '-';
       document.getElementById('fakturTanggal').innerText = formatDateShort(t.tanggal);
       document.getElementById('fakturNoNota').innerText = `TX_${t.id || (10000 + index)}`;
       

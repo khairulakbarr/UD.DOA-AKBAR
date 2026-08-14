@@ -547,118 +547,112 @@
     </main>
   </div>
 
-  <!-- MODAL INPUT TRANSAKSI SUPPLIER -->
-  <div id="modalInputSupplier" class="modal-sheet-overlay">
-    <div class="modal-sheet-content">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 shrink-0">
-        <div class="flex items-center gap-2.5">
-          <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20">
-            <i id="modalHeaderIconSupplier" data-lucide="truck" class="w-4 h-4 stroke-[2.5]"></i>
-          </div>
-          <div>
-            <h3 id="modalHeaderTitleSupplier" class="text-sm md:text-base font-extrabold text-slate-900 tracking-tight leading-none">Input Transaksi Supplier</h3>
-            <p class="text-[9px] font-bold text-slate-400 mt-0.5">UD. DOA AKBAR</p>
-          </div>
-        </div>
-        <button onclick="toggleModalInputSupplier(false)" class="p-1 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="formSupplierTransaksi" onsubmit="handleSupplierFormSubmit(event)" class="flex flex-col flex-1 min-h-0">
-        <div class="safari-scroll-container overflow-y-auto custom-v-scrollbar py-2.5 space-y-2 text-xs pr-1 flex-1">
-          <input type="hidden" id="editSupplierIndex" value="-1">
-
-          <div class="grid grid-cols-2 gap-2">
+ <!-- Modal Input Transaksi Supplier -->
+<div id="supplierModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl p-6 text-slate-100">
+        
+        <!-- Header Modal -->
+        <div class="flex justify-between items-center pb-4 border-b border-slate-800">
             <div>
-              <label class="block font-bold text-slate-700 mb-0.5 text-[10px]">Tanggal Transaksi</label>
-              <input type="date" id="inputTanggalSupplier" required onchange="onSupplierChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i data-lucide="truck" class="text-blue-400"></i> Input Transaksi Supplier
+                </h3>
+                <p class="text-xs text-slate-400">UD. DOA AKBAR</p>
             </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-0.5 text-[10px]">Pilih Supplier</label>
-              <select id="inputSupplierSelect" onchange="onSupplierChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs">
-                <option value="">-- Pilih Supplier --</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="p-2.5 bg-slate-50/90 border border-slate-200/80 rounded-2xl space-y-1.5">
-            <div class="flex items-center justify-between">
-              <label class="block font-extrabold text-slate-900 text-[11px]">Tambah Item Pasokan / Stok</label>
-              <span class="text-[8px] font-bold text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded-full">Stok Masuk</span>
-            </div>
-            
-            <input type="text" id="inputNamaBarangSupplier" placeholder="Nama Barang / Pasokan (cth: Ayam Hidup)" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-slate-800 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-            <div class="grid grid-cols-3 gap-1.5">
-              <div>
-                <label class="block text-[8px] font-bold text-slate-400 mb-0.5">Jumlah (Kg)</label>
-                <input type="number" step="any" id="inputKgSupplier" placeholder="0" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-slate-800 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
-              </div>
-              <div>
-                <label class="block text-[8px] font-bold text-slate-400 mb-0.5">Jumlah (Ekor)</label>
-                <input type="number" id="inputEkorSupplier" placeholder="0" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-slate-800 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
-              </div>
-              <div>
-                <label class="block text-[8px] font-bold text-slate-400 mb-0.5">Harga / Unit</label>
-                <input type="number" id="inputHargaSupplier" placeholder="Rp" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-slate-800 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
-              </div>
-            </div>
-
-            <button type="button" onclick="tambahItemSupplierNota()" class="w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold rounded-xl shadow-sm transition flex items-center justify-center gap-1 text-[11px] btn-interactive">
-              <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-blue-400"></i>
-              <span>Masukkan Rincian Pembelian</span>
+            <button onclick="closeSupplierModal()" class="p-2 hover:bg-slate-800 rounded-full transition text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
             </button>
-          </div>
-
-          <div id="containerItemSupplierNota" class="space-y-1 max-h-24 overflow-y-auto custom-v-scrollbar hidden"></div>
-
-          <div>
-            <label class="block font-bold text-slate-700 mb-0.5 text-[10px]">Biaya Operasional / Transport (Rp)</label>
-            <input type="number" id="inputBiayaLainSupplier" placeholder="0" oninput="kalkulasiSupplierNota()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs">
-          </div>
-
-          <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-2.5 rounded-2xl shadow-md text-center relative overflow-hidden">
-            <p class="text-[8px] font-bold tracking-wider uppercase text-blue-100">TOTAL PEMBELIAN / PASOKAN</p>
-            <h3 id="displayTotalPembelianSupplier" class="text-xl font-black tracking-tight mt-0.5">Rp 0</h3>
-          </div>
-
-          <div class="p-2 bg-amber-50/70 border border-amber-200/80 rounded-2xl grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-bold text-slate-600 text-[9px] mb-0.5">Sisa Hutang Lalu</label>
-              <input type="text" id="inputSisaHutangLaluSupplier" readonly value="Rp 0" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-slate-700 font-bold text-xs readonly cursor-not-allowed">
-            </div>
-            <div>
-              <label class="block font-bold text-slate-600 text-[9px] mb-0.5">Total Kewajiban Hutang</label>
-              <input type="text" id="displayTotalHutangBaruSupplier" readonly value="Rp 0" class="w-full bg-white border border-slate-200 rounded-xl px-2.5 py-1 text-red-600 font-extrabold text-xs readonly cursor-not-allowed">
-            </div>
-          </div>
-
-          <div>
-            <label class="block font-bold text-emerald-700 mb-0.5 text-[10px]">Bayar / DP / Pelunasan (Rp)</label>
-            <input type="number" id="inputBayarSupplier" placeholder="0" oninput="kalkulasiSupplierNota()" class="w-full bg-emerald-50/50 border-2 border-emerald-500 rounded-xl px-3 py-1.5 text-emerald-800 font-extrabold text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600">
-          </div>
-
-          <div class="bg-slate-900 text-white p-2.5 rounded-2xl shadow-md border-l-4 border-amber-500 flex items-center justify-between">
-            <div>
-              <p class="text-[8px] font-bold text-slate-400 uppercase tracking-wide">SISA HUTANG AKHIR SUPPLIER</p>
-              <h3 id="displaySisaHutangAkhirSupplier" class="text-base font-black text-amber-400 tracking-tight">Rp 0</h3>
-            </div>
-            <div class="p-1.5 bg-amber-500/20 text-amber-400 rounded-lg">
-              <i data-lucide="alert-circle" class="w-4 h-4"></i>
-            </div>
-          </div>
         </div>
 
-        <div class="pt-2 border-t border-slate-100 shrink-0 mt-1">
-          <button type="submit" id="btnSubmitFormSupplier" class="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-blue-600/25 transition btn-interactive">
-            Simpan Transaksi Supplier
-          </button>
+        <!-- Form Body -->
+        <div class="space-y-4 pt-4">
+            <!-- Pilihan Supplier & Tanggal -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Supplier</label>
+                    <select id="supName" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                        <!-- Options loaded dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Tanggal</label>
+                    <input type="date" id="supDate" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+
+            <!-- Input Rincian Barang -->
+            <div class="bg-slate-800/50 border border-slate-800 p-3 rounded-2xl space-y-3">
+                <input type="text" id="itemName" placeholder="Nama Barang / Pasokan (cth: Ayam Hidup)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Jumlah (Kg)</label>
+                        <input type="number" id="itemKg" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-2 py-1.5 text-sm text-center">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Jumlah (Ekor)</label>
+                        <input type="number" id="itemEkor" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-2 py-1.5 text-sm text-center">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Harga / Unit</label>
+                        <input type="number" id="itemPrice" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-2 py-1.5 text-sm text-center">
+                    </div>
+                </div>
+                <button type="button" onclick="addSupplierItem()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Masukkan Rincian Pembelian
+                </button>
+            </div>
+
+            <!-- Tabel / List Rincian Barang yang Dimasukkan -->
+            <div id="itemListContainer" class="space-y-2 max-h-32 overflow-y-auto text-xs">
+                <!-- Dynamic Item List -->
+            </div>
+
+            <!-- TOTAL PEMBELIAN / PASOKAN -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 rounded-2xl text-center shadow-lg">
+                <span class="text-[10px] font-bold tracking-wider text-blue-100 uppercase">Total Pembelian / Pasokan</span>
+                <div id="displayTotalPembelian" class="text-2xl font-black text-white">Rp 0</div>
+            </div>
+
+            <!-- MENU POTONGAN BARU DI BAWAH TOTAL PEMBELIAN -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Potongan (Rp)</label>
+                <input type="number" id="supDiscount" value="0" oninput="calculateSupplierTotals()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500 text-white">
+            </div>
+
+            <!-- Sisa Hutang Lalu & Total Kewajiban -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl">
+                    <span class="block text-[10px] text-slate-400">Sisa Hutang Lalu</span>
+                    <input type="text" id="supOldDebt" readonly class="w-full bg-transparent text-sm font-bold text-slate-200 focus:outline-none" value="Rp 0">
+                </div>
+                <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl">
+                    <span class="block text-[10px] text-slate-400">Total Kewajiban Hutang</span>
+                    <input type="text" id="supTotalKewajiban" readonly class="w-full bg-transparent text-sm font-bold text-amber-400 focus:outline-none" value="Rp 0">
+                </div>
+            </div>
+
+            <!-- Pembayaran / DP / Pelunasan -->
+            <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Bayar / DP / Pelunasan (Rp)</label>
+                <input type="number" id="supPaid" value="0" oninput="calculateSupplierTotals()" class="w-full bg-slate-800 border border-emerald-500/50 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-emerald-500 text-emerald-400 font-bold">
+            </div>
+
+            <!-- Sisa Hutang Akhir Supplier -->
+            <div class="bg-slate-950 border border-amber-500/30 p-4 rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sisa Hutang Akhir Supplier</span>
+                    <div id="displayFinalDebt" class="text-xl font-black text-amber-400">Rp 0</div>
+                </div>
+                <i data-lucide="alert-circle" class="w-6 h-6 text-amber-400/60"></i>
+            </div>
+
+            <!-- Tombol Simpan -->
+            <button onclick="saveSupplierTransaction()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 rounded-xl shadow-lg transition">
+                Simpan Transaksi Supplier
+            </button>
         </div>
-      </form>
     </div>
-  </div>
-
+</div>
   <!-- MODAL KELOLA SUPPLIER -->
   <div id="modalKelolaSupplier" class="modal-sheet-overlay">
     <div class="modal-sheet-content">

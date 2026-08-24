@@ -2292,10 +2292,11 @@
 
     function hapusSetoran(i) {
       if (confirm("Hapus data setoran ini?")) {
+        const target = state.setoranPiutang[i];
         state.setoranPiutang.splice(i, 1);
         renderAll();
         renderModalSetoranList();
-        syncWithCloud('delete_setoran_piutang', { index: i });
+        syncWithCloud('delete_setoran_piutang', { id: target ? target.id : null });
       }
     }
 
@@ -2366,10 +2367,11 @@
 
     function hapusPengeluaran(i) {
       if (confirm("Hapus data pengeluaran ini?")) {
+        const target = state.pengeluaranToko[i];
         state.pengeluaranToko.splice(i, 1);
         renderAll();
         renderModalPengeluaranList();
-        syncWithCloud('delete_pengeluaran', { index: i });
+        syncWithCloud('delete_pengeluaran', { id: target ? target.id : null });
       }
     }
 
@@ -3189,9 +3191,10 @@
 
     function hapusTransaksi(index) {
       if (confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
+        const target = state.transactions[index];
         state.transactions.splice(index, 1);
         renderAll();
-        syncWithCloud('delete_transaction', { index });
+        syncWithCloud('delete_transaction', { id: target ? target.id : null });
       }
     }
 
@@ -3397,9 +3400,10 @@
 
     function hapusTransaksiSupplier(index) {
       if (confirm("Apakah Anda yakin ingin menghapus transaksi supplier ini?")) {
+        const target = state.supplierTransactions[index];
         state.supplierTransactions.splice(index, 1);
         renderAll();
-        syncWithCloud('delete_supplier_transaction', { index });
+        syncWithCloud('delete_supplier_transaction', { id: target ? target.id : null });
       }
     }
 
@@ -3676,21 +3680,23 @@
 
     function hapusCustomer(i) {
       if (confirm("Hapus customer ini dari daftar?")) {
+        const target = state.customers[i];
         state.customers.splice(i, 1);
         populateCustomerDropdown();
         renderModalCustomerList();
         renderAll();
-        syncWithCloud('delete_customer', { index: i });
+        syncWithCloud('delete_customer', { nama: target ? target.nama : null });
       }
     }
 
     function hapusSupplier(i) {
       if (confirm("Hapus supplier ini dari daftar?")) {
+        const target = state.suppliers[i];
         state.suppliers.splice(i, 1);
         populateSupplierDropdown();
         renderModalSupplierList();
         renderAll();
-        syncWithCloud('delete_supplier', { index: i });
+        syncWithCloud('delete_supplier', { nama: target ? target.nama : null });
       }
     }
 
